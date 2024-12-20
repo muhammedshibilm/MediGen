@@ -11,7 +11,7 @@ export async function POST(
 ){
     const {email,password} = await req.json()
     if ( !email || !password) {
-        return new Response("Missing required values",{
+        return  NextResponse.json({"error":"Missing required values"},{
             status: 400
         });
     }
