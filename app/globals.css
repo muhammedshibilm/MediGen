@@ -15,7 +15,43 @@
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #F0F4F8; /* Light greyish blue */
+  color: #1E293B; /* Dark grey-blue text for readability */
+  font-family: Arial, sans-serif; /* Ensure clean, modern typography */
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+button {
+  background-color: #055C9D; /* Medium blue from palette */
+  color: #F8FAFB; /* Soft cool white for button text */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0E86D4; /* Bright blue hover */
+}
+
+a {
+  color: #0E86D4; /* Bright blue links */
+  text-decoration: none;
+}
+
+a:hover {
+  color: #68BBE3; /* Light blue hover effect */
+}
+
+
+form {
+  background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+  border: 2px solid #F8FAFB; /* Soft off-white border */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+  padding: 20px;
+  max-width: 400px;
+  margin: 50px auto; /* Center form with spacing */
 }

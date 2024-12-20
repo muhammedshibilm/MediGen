@@ -29,7 +29,7 @@ export default function Signup() {
       } else {
         setError("Failed to create account");
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      
     } catch (error) {
       setError(`An error occured. Please try again later. ${error}`);
     }
