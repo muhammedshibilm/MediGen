@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const publicRoutes = ["/", "/login", "/signup"];
-const protectedRoutes = ["/chat", "/dashboard", "/document-upload", "/doctor-contact"];
+const publicRoutes = [ "/login", "/signup","/login/forgotpassword"];
+const protectedRoutes = ["/chat", "/document-upload", "/doctor-contact"];
 
 export function middleware(req: NextRequest) {
   const token = req.cookies.get("authToken")?.value;
@@ -9,7 +9,7 @@ export function middleware(req: NextRequest) {
 
   if (publicRoutes.includes(pathname)) {
     if (token) {
-      return NextResponse.redirect(new URL("/dashboard", req.url));
+      return NextResponse.redirect(new URL("/", req.url));
     }
     return NextResponse.next();
   }
@@ -25,11 +25,10 @@ export function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    "/",
-    "/login",
+    "/login/:path*",
     "/signup",
+    "/login/forgotpassword/:path*",
     "/chat/:path*",
-    "/dashboard/:path*",
     "/document-upload/:path*",
     "/doctor-contact/:path*",
   ],

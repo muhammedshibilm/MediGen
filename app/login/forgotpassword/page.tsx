@@ -2,18 +2,16 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function ForgotPassword(){
    
     const [email, setEmail] = useState("");
-    const [ message , setMessage] = useState("");
     const router = useRouter();
 
     const submissionHandler = async (e: React.FormEvent) =>{
 
         e.preventDefault();
-        
-         setMessage(" ");
 
         const res = await fetch("/api/auth/forgotpassword",{
             method: "post",
@@ -22,12 +20,13 @@ export default function ForgotPassword(){
             },
             body: JSON.stringify({email})
         });
-
+        
+        const data = await  res.json();
        if (!res.ok) {
-          const error = await  res.json();
-          setMessage(error)
+          
+          toast.error(data.error || "Someting went wrong")
        }
-
+       toast.message(data.message || "sucess") 
        router.push("/");
     }
     return(
@@ -37,7 +36,6 @@ export default function ForgotPassword(){
                 <input type="email" required value={email} onChange={(e)=> setEmail(e.target.value)}/>
                 <button type="submit">Reset Password</button>
           </form>
-          <p className="text-green-500">{message}</p>
         </>
     );
 }

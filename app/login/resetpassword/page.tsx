@@ -1,25 +1,23 @@
 "use client";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function ResetPassword(){
 
   const [newPassword,setNewPassword]= useState("");
-  const [error, setError] = useState("");
-  const [sucess, setSucess ] = useState(" ")
 
    const token = useSearchParams().get("token");
   
   useEffect(()=>{
     if (!token) {
-       setError("Invalid token")
+       toast.error("Invalid Token");
     }
   },[token]);
 
   const submissionHandler = async (e: React.FormEvent)=>{
     
     e.preventDefault();
-    setError(" ");
      
      try {
       
@@ -31,13 +29,13 @@ export default function ResetPassword(){
 
       if (!res.ok) {
         const data  = await res.json();
-        setError(data.error);
+        toast.error(data.error || "Something went wrong")
       }
-       setSucess("Password is updated");
+       toast.success("Password updated sucessfully");
 
      // eslint-disable-next-line @typescript-eslint/no-explicit-any
      } catch (error: any) {
-        setError(error.message)
+        toast.error(error.message || "Something went wrong");
      } 
   }
     return(
@@ -50,8 +48,7 @@ export default function ResetPassword(){
             <button type="submit">Update Password</button>
           </form>
 
-          <p className="text-green-500">{sucess}</p>
-          <p className="text-red-500">{error}</p>
+          
         </>
     );
 }

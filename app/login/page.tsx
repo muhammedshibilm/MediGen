@@ -70,7 +70,7 @@ export default function Login() {
       }
 
       toast.success(data.message || "Login successful!");
-      router.replace("/dashboard");
+      router.replace("/");
     } catch (error: unknown) {
       if (error instanceof Error) {
         toast.error(error.message);
