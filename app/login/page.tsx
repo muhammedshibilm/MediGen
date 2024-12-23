@@ -5,10 +5,16 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import Link from "next/link";
 
+
+
+
 interface ApiResponse {
   error?: string;
   message?: string;
 }
+
+
+
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -71,6 +77,7 @@ export default function Login() {
 
       toast.success(data.message || "Login successful!");
       router.replace("/");
+      
     } catch (error: unknown) {
       if (error instanceof Error) {
         toast.error(error.message);

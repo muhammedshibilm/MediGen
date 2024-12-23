@@ -65,3 +65,13 @@ export async function POST(
     
   
 }
+
+export async function GET(
+    req: NextRequest
+){
+     const token = await req.cookies.get("authToken");
+     
+     return token? NextResponse.json({"message":"authorized",}): NextResponse.json({"error":"Unauthorized"},{
+            status: 401
+        })  
+}

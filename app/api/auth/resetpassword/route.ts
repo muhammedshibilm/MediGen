@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
 
   const prisma = new PrismaClient();
 
-  const SALT_ROUND = parseInt(process.env.SALT_ROUND!) || 10;
+  const SALT_ROUND = parseInt(process.env.SALT_ROUND!);
 
   if (!token || !newpassword) {
     return NextResponse.json(

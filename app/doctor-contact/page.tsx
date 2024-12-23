@@ -2,15 +2,15 @@ import { Navbar } from "@/components/navbar";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Chat",
-    description: "This is the Chat page ",
+    title: "Doctor Contact",
+    description: "This is the Doctor Contact page ",
   };
   
-export default function Chat(){
+export default function DoctorContact(){
     return(
         <div>
             <Navbar/>
-            its chat page
+            its contact page
         </div>
     );
 }

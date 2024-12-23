@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { verifyjwttoken } from "./lib/jwt";
 
 const publicRoutes = [ "/login", "/signup","/login/forgotpassword"];
 const protectedRoutes = ["/chat", "/document-upload", "/doctor-contact"];
+
+
 
 export function middleware(req: NextRequest) {
   const token = req.cookies.get("authToken")?.value;
@@ -9,7 +12,9 @@ export function middleware(req: NextRequest) {
 
   if (publicRoutes.includes(pathname)) {
     if (token) {
-      return NextResponse.redirect(new URL("/", req.url));
+      if (verifyjwttoken(token)) {
+        return NextResponse.redirect(new URL("/", req.url));
+      }    
     }
     return NextResponse.next();
   }
