@@ -5,6 +5,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import { checkAuth } from "@/utils/auth";
+import { Button } from "./ui/button";
 
 
 const logout = async () => {
@@ -36,24 +37,27 @@ export const Navbar = () => {
     }, []);
 
     return (
-        <nav className="container">
-            <div className="logo">
-                <Image src={logo} alt="logo" width={24} height={24} />
-                <h4>MEDiGEN</h4>
+        <nav className="bg-blue-500  w-screen flex  h-20">
+            <div className="logo flex-1 flex items-center">
+                <Image src={logo} alt="logo"  className="mx-5 w-14 h-10" />
+                <h4 className="font-bold text-white text-opacity-50" style={{letterSpacing: 5}}>MEDiGEN</h4>
             </div>
-            <div className="links">
-                <ul>
+            <div className="links flex-auto pt-6">
+                <ul className="flex justify-around items-center font-semibold text-white">
                     <li><Link href={"/"}>Home</Link></li>
                     <li><Link href={"/chat"}>Chat with AI</Link></li>
                     <li><Link href={"/doctor-contact"}>Doctor Contact</Link></li>
                     <li><Link href={"/document-upload"}>Document Upload</Link></li>
                 </ul>
             </div>
-            <div className="user">
+            <div className="user flex-1 flex justify-around items-center">
                 {isAuthenticated ? (
                     <button onClick={logout}>Logout</button>
                 ) : (
-                    <Link href={"/login"}>Login</Link>
+                    <>
+                 <Button><Link href={"/signup"}>Create Account</Link></Button>
+                 <Button><Link href={"/login"}>Login</Link></Button>
+                    </>
                 )}
             </div>
         </nav>

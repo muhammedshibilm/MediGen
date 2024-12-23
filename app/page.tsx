@@ -9,9 +9,9 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-     <div>
+     <>
       <Navbar />
        its home page
-     </div>
+     </>
   );
 }
