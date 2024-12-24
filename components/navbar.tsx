@@ -37,12 +37,12 @@ export const Navbar = () => {
     }, []);
 
     return (
-        <nav className="bg-blue-500  w-screen flex  h-20">
+        <nav className=" w-[90%] flex  h-16 opacity-90 rounded-lg shadow-md shadow-white fixed top-0 left-16    z-50">
             <div className="logo flex-1 flex items-center">
-                <Image src={logo} alt="logo"  className="mx-5 w-14 h-10" />
+                <Image src={logo} alt="logo"  className="mx-5 w-12 h-8" />
                 <h4 className="font-bold text-white text-opacity-50" style={{letterSpacing: 5}}>MEDiGEN</h4>
             </div>
-            <div className="links flex-auto pt-6">
+            <div className="links flex-auto pt-4">
                 <ul className="flex justify-around items-center font-semibold text-white">
                     <li><Link href={"/"}>Home</Link></li>
                     <li><Link href={"/chat"}>Chat with AI</Link></li>
@@ -55,8 +55,8 @@ export const Navbar = () => {
                     <button onClick={logout}>Logout</button>
                 ) : (
                     <>
-                 <Button><Link href={"/signup"}>Create Account</Link></Button>
-                 <Button><Link href={"/login"}>Login</Link></Button>
+                 <Button className="bg-violet-800 hover:bg-violet-900"><Link href={"/signup"}>Create Account</Link></Button>
+                 <Button  className="bg-violet-800  hover:bg-violet-900"><Link href={"/login"}>Login</Link></Button>
                     </>
                 )}
             </div>

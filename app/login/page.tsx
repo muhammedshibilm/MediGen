@@ -90,7 +90,7 @@ export default function Login() {
   };
 
   return (
-    <div style={{ backgroundImage: 'url("/gridlayout.svg")', backgroundSize: "cover", height: "50vh"} }>
+    <div style={{ backgroundImage: 'url("/images/gridlayout.svg")', backgroundSize: "cover", height: "50vh"} }>
      <div className="flex flex-col items-center justify-center h-screen">
      <p className="text-2xl font-bold mb-4">Welcome Back</p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">

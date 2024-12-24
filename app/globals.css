@@ -7,7 +7,10 @@ body {
   font-family: Arial, sans-serif; /* Ensure clean, modern typography */
   margin: 0;
   padding: 0;
-  width: 100vw;
+  background: linear-gradient(to bottom,#102554 15%,#03061E 85%);
+  background-repeat: no-repeat;
+  color: #F1F6F9;
+  overflow-x: hidden;
 }
 
 
