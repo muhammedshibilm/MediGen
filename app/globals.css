@@ -80,3 +80,10 @@ body {
   }
 }
 
+.health-tips::-webkit-scrollbar{
+  scroll-behavior: smooth;
+  width: 0;
+}
+body::-webkit-scrollbar{
+  width: 0;
+}

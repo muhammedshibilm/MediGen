@@ -4,6 +4,7 @@ import Image from "next/image";
 import heroicon from "@/public/images/heroicon.jpg";
 import { Button } from "@/components/ui/button";
 import { Instagram } from "lucide-react";
+import { Cards } from "@/components/Cards";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -47,11 +48,17 @@ export default function Home() {
           </Button>
         </div>
 
-        {/* Health News */}
-        <h2 className="text-center mt-10 text-xl">Health News</h2>
-        <div className="flex justify-around  overflow-x-scroll">
-          
-        </div>
+          {/* Health News */}
+          <h2 className="text-center my-10 text-xl">Health News</h2>
+            <div className="health-tips flex overflow-x-auto space-x-4 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+                <Cards />
+                <Cards />
+                <Cards />
+                <Cards />
+                <Cards />
+                <Cards />
+                <Cards />
+            </div>
       </div>
     </>
   );

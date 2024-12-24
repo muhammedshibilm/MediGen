@@ -55,8 +55,12 @@ export default {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
-  		}
-  	}
+  		},
+		backgroundImage:{
+			"custom-gradient": "linear-gradient(to bottom,#102554 15%,#03061E 85%)",
+		}
+  	},
   },
+
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;

@@ -37,7 +37,7 @@ export const Navbar = () => {
     }, []);
 
     return (
-        <nav className=" w-[90%] flex  h-16 opacity-90 rounded-lg shadow-md shadow-white fixed top-0 left-16    z-50">
+        <nav className=" w-[90%] flex  h-16 bg-custom-gradient opacity-90 rounded-lg shadow-md shadow-white fixed top-0 left-20    z-50">
             <div className="logo flex-1 flex items-center">
                 <Image src={logo} alt="logo"  className="mx-5 w-12 h-8" />
                 <h4 className="font-bold text-white text-opacity-50" style={{letterSpacing: 5}}>MEDiGEN</h4>
