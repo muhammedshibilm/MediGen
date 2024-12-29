@@ -1,15 +1,11 @@
+"use client";
+
 import { Navbar } from "@/components/navbar";
-import { Metadata } from "next";
 import Image from "next/image";
 import heroicon from "@/public/images/heroicon.jpg";
 import { Button } from "@/components/ui/button";
 import { Instagram } from "lucide-react";
 import { Cards } from "@/components/Cards";
-
-export const metadata: Metadata = {
-  title: "Home",
-  description: "This is the home page",
-};
 
 export default function Home() {
   return (
@@ -44,21 +40,21 @@ export default function Home() {
             Follow us on Instagram for daily health tips and inspiration!
           </p>
           <Button className="px-6 py-5 bg-pink-600">
-            <Instagram /> Instagram
+            <Instagram size={24} /> Instagram
           </Button>
         </div>
 
-          {/* Health News */}
-          <h2 className="text-center my-10 text-xl">Health News</h2>
-            <div className="health-tips flex overflow-x-auto space-x-4 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
-                <Cards />
-                <Cards />
-                <Cards />
-                <Cards />
-                <Cards />
-                <Cards />
-                <Cards />
-            </div>
+        {/* Health News */}
+        <h2 className="text-center my-10 text-xl">Health News</h2>
+        <div className="health-tips flex  overflow-x-auto gap-4">
+          <Cards />
+          <Cards />
+          <Cards />
+          <Cards />
+          <Cards />
+        </div>
+    
+
       </div>
     </>
   );
