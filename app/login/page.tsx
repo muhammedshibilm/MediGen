@@ -90,18 +90,19 @@ export default function Login() {
   };
 
   return (
-    <div style={{ backgroundImage: 'url("/images/gridlayout.svg")', backgroundSize: "cover", height: "50vh"} }>
+    <div style={{ backgroundImage: 'url("/images/gridlayout.svg")', backgroundSize: "cover", height: "100vh"} }>
      <div className="flex flex-col items-center justify-center h-screen">
-     <p className="text-2xl font-bold mb-4">Welcome Back</p>
+     <p className="text-2xl font-bold mb-4" style={{letterSpacing: 3}}>Welcome Back</p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
-          <label htmlFor="email" className="block font-medium">Email:</label>
+          <label htmlFor="email" className="block text-sm text-gray-400">Email:</label>
           <input
+          placeholder="Enter your email"
             id="email"
             type="email"
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className={`w-full p-2 border rounded ${
+            className={`w-full p-2 border rounded-md placeholder:text-sm text-gray-400 ${
               errors.email ? "border-red-500" : "border-gray-300"
             }`}
           />
@@ -111,11 +112,12 @@ export default function Login() {
         <div>
           <label htmlFor="password" className="block font-medium">Password:</label>
           <input
+          placeholder="Enter your password"
             id="password"
             type="password"
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
-            className={`w-full p-2 border rounded ${
+            className={`w-full p-2 border rounded-md placeholder:text-sm placeholder:text-gray-400 ${
               errors.password ? "border-red-500" : "border-gray-300"
             }`}
           />
@@ -124,13 +126,13 @@ export default function Login() {
           )}
         </div>
 
-        <Button type="submit" disabled={loading}>
+        <Button type="submit" disabled={loading} className="bg-[#1570EF] ">
           {loading ? "Logging in..." : "Login"}
         </Button>
       </form>
-      <p className="leading-7 [&:not(:first-child)]:mt-6">Forgot Pasword  <Link href={"/login/forgotpassword" }>Click me</Link></p>
+      <p className="leading-7 [&:not(:first-child)]:mt-6 text-gray-500">Forgot Pasword  <Link href={"/login/forgotpassword" } className="text-gray-400">Click me</Link></p>
       
-      <p className="leading-7 [&:not(:first-child)]:mt-6">New User <Link href={"/signup" }>Click me</Link></p>
+      <p className="leading-7 [&:not(:first-child)]:mt-6 text-gray-400">New User <Link href={"/signup" } className="text-gray-300">Click me</Link></p>
 
      </div>
     </div>

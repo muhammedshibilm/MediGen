@@ -54,8 +54,8 @@ export const Cards = ({styletype, flexcol, colored }: CardType) =>{
 
              
             "cardstyle":{
-                "width": "w-[480px]",
-                "height": "h-min-[200px]"
+                "width": "w-[500px]",
+                "height": "h-[200px]"
             }
             ,
             

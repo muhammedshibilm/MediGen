@@ -8,6 +8,7 @@ import { Download, Instagram } from "lucide-react";
 import { Cards } from "@/components/Cards";
 import statisticsone from "@/public/images/statisticsone.svg";
 import statisticstwo from "@/public/images/statisticstwo.svg"
+import { Footer } from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -126,6 +127,9 @@ export default function Home() {
           <Cards styletype="featureddoctor" />
         </div>
       </div>
+
+      {/* Footer  */}
+      <Footer/>
     </>
   );
 }
