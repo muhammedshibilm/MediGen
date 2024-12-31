@@ -26,16 +26,9 @@ export const Footer = () => {
       </div>
       {/* bottom */}
       <div className="border-t-2 border-white flex justify-between px-10 py-5">
-        <Select>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Language" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="English">English</SelectItem>
-            <SelectItem value="Malayalam">Malayalam</SelectItem>
-            <SelectItem value="Spanish">Spanish</SelectItem>
-          </SelectContent>
-        </Select>
+        <div>
+          
+        </div>
 
         <div>
           <ul className="flex gap-10">

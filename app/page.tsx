@@ -9,11 +9,12 @@ import { Cards } from "@/components/Cards";
 import statisticsone from "@/public/images/statisticsone.svg";
 import statisticstwo from "@/public/images/statisticstwo.svg"
 import { Footer } from "@/components/Footer";
+import SideBar from "@/components/Sidebar";
 
 export default function Home() {
   return (
     <>
-      <Navbar />
+      <SideBar/>
       <div className="relative w-screen h-screen">
         <Image
           src={heroicon}
@@ -59,7 +60,7 @@ export default function Home() {
 
         {/* health Tips */}
         <div className="mt-5">
-          <form className="space-y-2">
+          <form className="space-y-2 ml-2">
             <input type="checkbox" name="all" id="all" />
             <label htmlFor="all" className="ml-2">
               {" "}
