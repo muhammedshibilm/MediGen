@@ -1,22 +1,15 @@
 import { Copyright, Facebook, Linkedin, Twitter, Youtube } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 export const Footer = () => {
   return (
-    <footer className="py-20">
+    <footer className=" pb-28 pt-10 md:py-20">
       {/* top */}
-      <div className=" flex w-full justify-between container mx-auto pb-5">
-        <h1 className="font-bold text-2xl" style={{ letterSpacing: 2 }}>
+      <div className=" flex w-full justify-between container  mx-auto pb-5">
+        <h1 className="font-bold text-2xl hidden md:block" style={{ letterSpacing: 2 }}>
           MEDiGEN
         </h1>
         <div>
-          <ul className="flex space-x-11">
+          <ul className="flex md:space-x-11 justify-around md:justify-center  w-screen  md:w-fit ">
             <li>About</li>
             <li>Help Center</li>
             <li>Contact us</li>
@@ -25,7 +18,7 @@ export const Footer = () => {
         </div>
       </div>
       {/* bottom */}
-      <div className="border-t-2 border-white flex justify-between px-10 py-5">
+      <div className="border-t-2 border-white flex  justify-between items-center px-10 py-5 flex-col  md:flex-row">
         <div>
           
         </div>
@@ -40,7 +33,7 @@ export const Footer = () => {
             <li>Site map</li>
           </ul>
         </div>
-        <div className="flex gap-5">
+        <div className="flex gap-5 mt-5 md:m-0">
           <Twitter />
           <Facebook />
           <Linkedin />

@@ -23,10 +23,10 @@ export default function Home() {
         />
         {/* Centered Text */}
         <div className="absolute inset-0 flex flex-col justify-center items-start left-20 z-40 text-white text-center">
-          <h1 className="text-5xl font-semibold mb-4 text-start leading-tight">
+          <h1 className="text-4xl md:text-5xl font-semibold mb-4 text-start leading-tight">
             Empowering Your Health Journey with <br /> AI
           </h1>
-          <p className="text-xl">
+          <p className=" text-lg text-start md:text-xl">
             Connecting you to top healthcare providers with ease.
           </p>
           <Button className="px-6 py-5 mt-5 bg-violet-700  text-md">
