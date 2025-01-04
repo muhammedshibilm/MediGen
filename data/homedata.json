@@ -1,0 +1,96 @@
+{
+  "healthnews": [
+    {
+      "id": 1,
+      "title": "Vaccine Updates",
+      "description": "New vaccines for this flu season are now available.",
+      "image": "/newsimg1.jpg"
+    },
+    {
+      "id": 2,
+      "title": "Exercise Benefits",
+      "description": "Regular exercise can significantly boost your immune system.",
+      "image": "/newsimg2.jpg"
+    },
+    {
+      "id": 3,
+      "title": "Nutrition Tips",
+      "description": "Learn the top foods to include in your diet for optimal health.",
+      "image": "/newsimg3.jpg"
+    },
+    {
+      "id": 4,
+      "title": "Mental Wellness",
+      "description": "Explore techniques to maintain mental well-being during stressful times.",
+      "image": "/newsimg4.jpg"
+    }
+  ],
+  "healthtips": [
+    {
+      "id": 1,
+      "title": "Healthy Eating",
+      "description": "Learn the importance of balanced meals.",
+      "image": "/tipimg1.jpg"
+    },
+    {
+      "id": 2,
+      "title": "Exercise Tips",
+      "description": "Simple exercises for a fit lifestyle.",
+      "image": "/tipimg2.jpg"
+    },
+    {
+      "id": 3,
+      "title": "Meditation Guide",
+      "description": "Find peace with easy meditation.",
+      "image": "/tipimg3.jpg"
+    }
+  ],
+  "weekelyplan": [
+    {
+      "id": 1,
+      "title": "Week 1 Plan",
+      "description": "Focus on cardio and flexibility exercises this week to build endurance."
+    },
+    {
+      "id": 2,
+      "title": "Week 2 Plan",
+      "description": "Strength training and core stability exercises are key components."
+    },
+    {
+      "id": 3,
+      "title": "Week 3 Plan",
+      "description": "Introduce HIIT sessions and balance exercises for variety."
+    },
+    {
+      "id": 4,
+      "title": "Week 4 Plan",
+      "description": "Consolidate gains with a mix of all exercise types."
+    }
+  ],
+  "featureddoctor": [
+    {
+      "id": 1,
+      "title": "Dr. Sarah Johnson",
+      "description": "Cardiologist",
+      "image": "/docimg1.png"
+    },
+    {
+      "id": 2,
+      "title": "Dr. Michael Brown",
+      "description": "Neurosurgeon",
+      "image": "/docimg2.png"
+    },
+    {
+      "id": 3,
+      "title": "Dr. Emily Davis",
+      "description": "Pediatrician",
+      "image": "/docimg3.png"
+    },
+    {
+      "id": 4,
+      "title": "Dr. James Wilson",
+      "description": "Dermatologist",
+      "image": "/docimg4.png"
+    }
+  ]
+}

@@ -1,6 +1,5 @@
 "use client";
 
-import { Navbar } from "@/components/navbar";
 import Image from "next/image";
 import heroicon from "@/public/images/heroicon.jpg";
 import { Button } from "@/components/ui/button";
@@ -10,6 +9,7 @@ import statisticsone from "@/public/images/statisticsone.svg";
 import statisticstwo from "@/public/images/statisticstwo.svg"
 import { Footer } from "@/components/Footer";
 import SideBar from "@/components/Sidebar";
+import data from "@/data/homedata.json";
 
 export default function Home() {
   return (
@@ -29,7 +29,7 @@ export default function Home() {
           <p className=" text-lg text-start md:text-xl">
             Connecting you to top healthcare providers with ease.
           </p>
-          <Button className="px-6 py-5 mt-5 bg-violet-700  text-md">
+          <Button className="px-6 py-5 mt-5 bg-violet-700  text-md hover:text-white">
             Start Chatting Now
           </Button>
         </div>
@@ -39,11 +39,11 @@ export default function Home() {
           <h2 className="font-semibold text-xl text-center">
             Ready to Transform Your Health?
           </h2>
-          <Button className="px-6 py-5 bg-gray-600">Get Started</Button>
+          <Button className="px-6 py-5 bg-gray-600  hover:text-white">Get Started</Button>
           <p className="font-light">
             Follow us on Instagram for daily health tips and inspiration!
           </p>
-          <Button className="px-6 py-5 bg-pink-600">
+          <Button className="px-6 py-5 bg-pink-600  hover:text-white">
             <Instagram size={24} /> Instagram
           </Button>
         </div>
@@ -51,11 +51,7 @@ export default function Home() {
         {/* Health News */}
         <h2 className="text-center my-10 text-xl">Health News</h2>
         <div className="health-tips flex  overflow-x-auto gap-4">
-          <Cards styletype="healthnews" colored/>
-          <Cards  styletype="healthnews" colored />
-          <Cards styletype="healthnews" colored/>
-          <Cards styletype="healthnews" colored />
-          <Cards styletype="healthnews" colored/>
+          <Cards styletype="healthnews" colored data={data.healthnews} />
         </div>
 
         {/* health Tips */}
@@ -86,11 +82,7 @@ export default function Home() {
           </form>
           <h2 className="text-center my-10 text-xl">Health Tips</h2>
           <div className="health-tips flex  overflow-x-auto gap-4">
-            <Cards styletype="healthtips" flexcol={true} />
-            <Cards styletype="healthtips"  flexcol={true} />
-            <Cards styletype="healthtips"  flexcol={true}/>
-            <Cards styletype="healthtips"  flexcol={true}/>
-            <Cards styletype="healthtips" flexcol={true}  />
+            <Cards styletype="healthtips" flexcol={true} data={data.healthtips} />
           </div>
         </div>
 
@@ -107,25 +99,17 @@ export default function Home() {
         {/* Weekly Exercise Plan */}
         <h2 className="text-center my-10 text-xl">Weekly Exercise Plan</h2>
         <div className="health-tips flex  overflow-x-auto gap-4 ">
-          <Cards styletype="weekelyplan" />
-          <Cards styletype="weekelyplan" />
-          <Cards styletype="weekelyplan" />
-          <Cards styletype="weekelyplan" />
-          <Cards styletype="weekelyplan" />
+          <Cards styletype="weekelyplan" data={data.weekelyplan} />
         </div>
         <div className="flex justify-center items-center gap-10 mt-5">
-           <Button className="bg-blue-800">View Full Plan</Button> <Button className="bg-white text-black"><Download/> Download PDF</Button>
+           <Button className="bg-blue-800  hover:text-white">View Full Plan</Button> <Button className="bg-white text-black  hover:text-white"><Download/> Download PDF</Button>
         </div>
 
 
         {/* Featured Doctors */}
         <h2 className="text-center my-10 text-xl">Featured Doctors</h2>
         <div className="health-tips  flex overflow-x-auto gap-4">
-          <Cards styletype="featureddoctor" />
-          <Cards styletype="featureddoctor" />
-          <Cards styletype="featureddoctor" />
-          <Cards styletype="featureddoctor" />
-          <Cards styletype="featureddoctor" />
+          <Cards styletype="featureddoctor" data={data.featureddoctor}/>
         </div>
       </div>
 

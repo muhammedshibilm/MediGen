@@ -11,8 +11,7 @@ import {
   LogOut,
   MessageSquare,
   Settings,
-  Upload,
-  User2Icon,
+  Upload
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -27,9 +26,8 @@ const logout = async () => {
       return toast.error(data.error || "Something went wrong");
     }
     toast.success(data.message || "Logout successful");
-    document.cookie =
-      "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    window.location.reload();
+ 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     toast.error("Failed to log out");
   }
@@ -38,17 +36,33 @@ const logout = async () => {
 export default function SideBar() {
   const [open, setOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState<{ username: string; email: string } | null>( null);
 
   useEffect(() => {
     checkAuth().then(setIsAuthenticated);
+    const fetchUser = async () => {
+      try {
+        const res = await fetch("/api/auth/me", { method: "GET" });
+        const data = await res.json();
+        if (res.ok) {
+          setIsAuthenticated(true);
+          setUser(data);
+        }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) {
+        setIsAuthenticated(false);
+        setUser(null);
+      }
+    };
+    fetchUser();
   }, []);
 
   return (
     <Tooltip.Provider>
       {/* Above medium device  */}
       <div
-        className={`fixed top-0 left-0 h-screen bg-[#121736] z-50 transition-all duration-500 hidden md:block ${
-          open ? "w-48" : "w-14"
+        className={`fixed top-0 left-0 h-screen bg-[#121736] z-50 transition-all duration-300 hidden md:block ${
+          open ? "w-52" : "w-14"
         }`}
       >
         {/* Sidebar Header */}
@@ -72,7 +86,7 @@ export default function SideBar() {
         </div>
 
         {/* Sidebar Content */}
-        <div className="text-white flex flex-col justify-around h-full">
+        <div className={`text-white flex flex-col justify-around  h-full`}>
           {/* Navigation Links */}
           <ul className="space-y-4">
             <Tooltip.Root>
@@ -172,9 +186,17 @@ export default function SideBar() {
           </ul>
 
           {/* Footer */}
-          <div className=" text-black bg-white py-4 px-4 flex items-center gap-4">
-            <User2Icon />
-            {open && <p className="truncate text-sm">example@gmail.com</p>}
+          <div className="text-black bg-white   flex justify-between">
+             <div className="text-white bg-violet-900 h-full w-full flex-1 flex justify-center items-center text-3xl py-4">
+                   {
+                     user?.username.substring(0,2)
+                   }
+             </div>
+            {open && user && (
+              <p className="truncate  p-2    flex-2">
+                {user.username.toUpperCase()} <br />  <span className="text-sm">{user.email}</span>
+              </p>
+            )}
           </div>
         </div>
       </div>

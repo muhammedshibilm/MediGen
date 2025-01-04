@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/navbar";
+import SideBar from "@/components/Sidebar";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function Chat(){
     return(
         <div>
-            <Navbar/>
+            <SideBar/>
             its chat page
         </div>
     );
