@@ -13,6 +13,7 @@ export async function GET(req: NextRequest) {
     const { username, email } = decoded as { username: string; email: string };
 
     return NextResponse.json({ username, email });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return NextResponse.json({ error: "Invalid token" }, { status: 401 });
   }

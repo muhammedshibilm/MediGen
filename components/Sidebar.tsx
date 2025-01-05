@@ -202,6 +202,9 @@ export default function SideBar() {
       </div>
 
       {/* Mobile Device */}
+      <div className="fixed top-4 right-5 px-7 py-4  z-50 bg-[#121736] rounded-full block md:hidden  text-2xl cursor-pointer ">
+        {user?.username.substring(0,2)  }  
+      </div>
       <div className="fixed   w-full px-5 bottom-10  z-50 block md:hidden">
         <div className="flex justify-around p-5  bg-[#121736] rounded-full ">
           <Tooltip.Root>
