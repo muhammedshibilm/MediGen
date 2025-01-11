@@ -109,7 +109,7 @@ export const Cards = ({ styletype, flexcol, colored, data }: CardProps) => {
       {data.map((item) => (
         <div
           key={item.id}
-          className={`cards ${colored ? "bg-[#DACAA4]" : "bg-white"} ${
+          className={`cards bg-card-gradient ${
             cuttentstyle.cardstyle.width
           } ${
             cuttentstyle.cardstyle.height
@@ -133,11 +133,11 @@ export const Cards = ({ styletype, flexcol, colored, data }: CardProps) => {
             ) : null}
           </Suspense>
           <div className="px-6  space-y-2">
-            <h1 className=" text-black font-bold text-lg">{item.title}</h1>
-            <p className="text-gray-500 font-normal">
+            <h1 className=" text-white font-bold text-lg">{item.title}</h1>
+            <p className="text-[#D6E0FF] font-normal">
              {item.description}
             </p>
-            <Button className="border-2 border-blue-700 py-5  px-20 bg-white text-black font-semibold w-full  hover:text-white">
+            <Button className=" py-5  px-20 bg-custom-yellow text-custom-gray font-semibold w-full  hover:text-white">
               {" "}
               {cuttentstyle.button.text}{" "}
             </Button>

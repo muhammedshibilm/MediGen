@@ -61,7 +61,7 @@ export default function SideBar() {
     <Tooltip.Provider>
       {/* Above medium device  */}
       <div
-        className={`fixed top-0 left-0 h-screen bg-[#121736] z-50 transition-all duration-300 hidden md:block ${
+        className={`fixed top-0 left-0 h-screen bg-[#111624] z-50 transition-all duration-300 hidden md:block ${
           open ? "w-52" : "w-14"
         }`}
       >
@@ -164,12 +164,12 @@ export default function SideBar() {
                     className="flex items-center gap-4 px-4  cursor-pointer"
                     onClick={logout}
                   >
-                    <LogOut />
+                    <LogOut color="red" />
                     {open && <p>Logout</p>}
                   </li>
                 </Tooltip.Trigger>
                 {!open && (
-                  <Tooltip.Content side="right">Logout</Tooltip.Content>
+                  <Tooltip.Content side="right" >Logout</Tooltip.Content>
                 )}
               </Tooltip.Root>
             ) : (
@@ -186,18 +186,20 @@ export default function SideBar() {
           </ul>
 
           {/* Footer */}
-          <div className="text-black bg-white   flex justify-between">
-             <div className="text-white bg-violet-900 h-full w-full flex-1 flex justify-center items-center text-3xl py-4">
-                   {
-                     user?.username.substring(0,2)
-                   }
-             </div>
-            {open && user && (
-              <p className="truncate  p-2    flex-2">
-                {user.username.toUpperCase()} <br />  <span className="text-sm">{user.email}</span>
-              </p>
-            )}
+         {
+          user &&  <div className="text-black bg-white   flex justify-between">
+          <div className="text-white bg-[#070b14] h-full w-full flex-1 flex justify-center items-center text-3xl py-4">
+                {
+                  user?.username.substring(0,2)
+                }
           </div>
+         {open && user && (
+           <p className="truncate  p-2    flex-2">
+             {user.username.toUpperCase()} <br />  <span className="text-sm">{user.email}</span>
+           </p>
+         )}
+       </div>
+         }
         </div>
       </div>
 

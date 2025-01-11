@@ -10,6 +10,8 @@ export default {
   theme: {
     extend: {
       colors: {
+        'custom-yellow': '#EED1AC',
+        'custom-gray': '#16191E',
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -57,7 +59,9 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       backgroundImage: {
-        "custom-gradient": "linear-gradient(to bottom,#102554 15%,#03061E 85%)",
+        "custom-gradient": 'linear-gradient(180deg, #090C15 8.11%, #080B17 100%)',
+        'card-gradient': 'linear-gradient(180deg, #12141D 0%, #12151F 100%)',
+        pattern: "url('/images/pattern.webp')",
       },
     },
   },

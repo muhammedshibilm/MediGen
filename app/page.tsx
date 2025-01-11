@@ -26,10 +26,10 @@ export default function Home() {
           <h1 className="text-4xl md:text-5xl font-semibold mb-4 text-start leading-tight">
             Empowering Your Health Journey with <br /> AI
           </h1>
-          <p className=" text-lg text-start md:text-xl">
+          <p className=" text-lg text-start md:text-xl text-white">
             Connecting you to top healthcare providers with ease.
           </p>
-          <Button className="px-6 py-5 mt-5 bg-violet-700  text-md hover:text-white">
+          <Button className="px-6 py-5 mt-5 bg-custom-yellow text-custom-gray  text-md hover:text-white">
             Start Chatting Now
           </Button>
         </div>

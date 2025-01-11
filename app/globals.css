@@ -4,14 +4,17 @@
 
 
 body {
-  font-family: Arial, sans-serif; /* Ensure clean, modern typography */
-  margin: 0;
-  padding: 0;
-  background: linear-gradient(to bottom,#102554 15%,#03061E 85%);
-  background-repeat: no-repeat;
-  color: #F1F6F9;
-  overflow-x: hidden;
+  font-family: Arial, sans-serif; /* Clean, modern typography */
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+  /* Set a fallback background color */
+  background-image: url("/images/pattern.webp"); /* Use separate property for clarity */
+  background-repeat: no-repeat; /* Prevent repeating the image */
+  background-size: cover; /* Ensure the image covers the viewport */
+  color: #F1F6F9; /* Set text color for good contrast */
+  overflow-x: hidden; /* Prevent horizontal scrolling issues */
 }
+
 
 
 @layer base {
@@ -86,4 +89,13 @@ body {
 }
 body::-webkit-scrollbar{
   width: 0;
+}
+
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* Inverts colors, turning black into white */
+  opacity: 0.8; /* Adjust transparency if needed */
+}
+input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1; /* Ensure it's fully visible on hover */
 }

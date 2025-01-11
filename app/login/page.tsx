@@ -102,7 +102,7 @@ export default function Login() {
             type="email"
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className={`w-full p-2 border rounded-md placeholder:text-sm text-gray-400 ${
+            className={`w-full p-2 border rounded-md placeholder:text-sm text-gray-400 bg-[#232839] ${
               errors.email ? "border-red-500" : "border-gray-300"
             }`}
           />
@@ -117,7 +117,7 @@ export default function Login() {
             type="password"
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
-            className={`w-full p-2 border rounded-md text-black placeholder:text-sm placeholder:text-gray-400 ${
+            className={`w-full p-2 border rounded-md text-black placeholder:text-sm placeholder:text-gray-400  bg-[#232839] ${
               errors.password ? "border-red-500" : "border-gray-300"
             }`}
           />
@@ -126,7 +126,7 @@ export default function Login() {
           )}
         </div>
 
-        <Button type="submit" disabled={loading} className="bg-[#1570EF] ">
+        <Button type="submit" disabled={loading} className=" bg-custom-yellow text-custom-gray hover:text-white hover:bg-gray-600 ">
           {loading ? "Logging in..." : "Login"}
         </Button>
       </form>

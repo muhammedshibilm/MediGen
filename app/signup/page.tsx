@@ -49,7 +49,7 @@ export default function Signup() {
               Username{" "}
             </label>
             <input
-              className="bg-white border-2 border-[#194185]  rounded-md text-black p-1 placeholder:text-gray-600 placeholder:text-sm "
+              className="text-white border-2 border-[#194185] bg-[#232839]  rounded-md  p-1 placeholder:text-sm "
               type="text"
               value={form.username}
               onChange={(e) => setForm({ ...form, username: e.target.value })}
@@ -61,7 +61,7 @@ export default function Signup() {
               Email{" "}
             </label>
             <input
-              className="bg-white border-2 border-[#194185]  rounded-md text-black p-1 placeholder:text-gray-600 placeholder:text-sm "
+              className="bg-[#232839] text-white border-2 border-[#194185]  rounded-md  p-1  placeholder:text-sm "
               type="email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -73,7 +73,7 @@ export default function Signup() {
               Password
             </label>
             <input
-              className="bg-white border-2 border-[#194185]  rounded-md text-black p-1 placeholder:text-gray-600  mb-5 placeholder:text-sm "
+              className="bg-[#232839] text-white border-2 border-[#194185]  rounded-md  p-1   mb-5 placeholder:text-sm "
               type="password"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
@@ -81,7 +81,7 @@ export default function Signup() {
               placeholder="Enter your password"
             />
 
-            <Button type="submit" className="bg-[#1570EF] ">Create Account</Button>
+            <Button type="submit" className="bg-custom-yellow text-custom-gray hover:text-white ">Create Account</Button>
           </form>
 
           <Button className="bg-[#26272B] text-gray-300 text[#A0A0AB] py-4 px-3">Continue with Goolge</Button>
