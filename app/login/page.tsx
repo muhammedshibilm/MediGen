@@ -117,7 +117,7 @@ export default function Login() {
             type="password"
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
-            className={`w-full p-2 border rounded-md text-black placeholder:text-sm placeholder:text-gray-400  bg-[#232839] ${
+            className={`w-full p-2 border rounded-md  placeholder:text-sm text-gray-400 placeholder:text-gray-400  bg-[#232839] ${
               errors.password ? "border-red-500" : "border-gray-300"
             }`}
           />

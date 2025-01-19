@@ -2,8 +2,9 @@ import jwt from 'jsonwebtoken';
 
 interface DecodedToken{
     token: string;
-    id: string;
+    userId: string;
     email: string;
+    username: string;
     iat?: number;
     exp?: number;
 }
