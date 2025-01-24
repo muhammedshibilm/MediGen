@@ -99,3 +99,13 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
   opacity: 1; /* Ensure it's fully visible on hover */
 }
+
+td{
+  padding: 5px 4px;
+  
+}
+
+tr{
+  border-radius: 90%;
+ width: fit-content;
+}

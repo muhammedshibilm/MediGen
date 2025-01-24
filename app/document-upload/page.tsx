@@ -35,10 +35,11 @@ interface ChartData {
 export default function DocumentUpload() {
   const [file, setFile] = useState<File | null>(null);
   const [message, setMessage] = useState<string | null>(null);
-  const [chartData, setChartData] = useState<any>(null);
+  const [chartData, setChartData] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
+    if (e.target.files) {
       setFile(e.target.files[0]);
       setMessage(e.target.files[0].name);
     } else {
@@ -56,21 +57,38 @@ export default function DocumentUpload() {
     }
 
     const formData = new FormData();
-    formData.append("file_upload", file);
+    formData.append("files", file); 
 
     try {
-      const UPLOAD_URL = "http://localhost:8000/upload/";
-      const res = await fetch(UPLOAD_URL, {
+      const UPLOAD_URL = "http://localhost:8000/uploads/";
+      const res = await fetch("/api/upload-document", {
         method: "POST",
-        body: formData,
+        body: JSON.stringify({ file: file.name }),
       });
 
-      if (res.ok) {
-        setMessage(null);
-        toast.success("File successfully uploaded");
-      } else {
-        toast.error("File upload failed");
+      if (!res.ok) {
+          toast.error("File Upload Failed")
       }
+      if (res.ok) {
+        
+        const res = await fetch(UPLOAD_URL,{
+          method: "POST",
+          body: formData
+        });
+
+       
+        if (!res.ok) {
+          toast.error("File upload failed")
+
+        }
+        if (res.ok) {
+          toast.success("File Upload Sucess")
+          window.location.reload()
+        }
+
+      }
+
+      
     } catch (error) {
       console.error("Upload Error:", error);
       toast.error("An error occurred while uploading the file");
@@ -82,7 +100,7 @@ export default function DocumentUpload() {
       try {
         const res = await fetch("http://localhost:8000/analyze/");
         if (!res.ok) {
-          throw new Error("Failed to fetch chart data");
+          setError("No analysis data found");
         }
 
         const data: ChartData = await res.json();
@@ -137,7 +155,7 @@ export default function DocumentUpload() {
                   id="file-upload"
                   type="file"
                   className="hidden"
-                  accept=".pdf,.doc,.docx"
+                  accept=".pdf"
                   onChange={handleFileChange}
                 />
               </div>
@@ -164,28 +182,32 @@ export default function DocumentUpload() {
           </div>
         </form>
       </div>
-      <div className="my-10 container mx-auto flex justify-center items-center text-white h-[700px]">
+      <div
+        className={`my-10 container mx-auto flex  h-[800px] justify-center  items-center text-white ${
+          error ? "hidden" : "flex"
+        }`}
+      >
         {chartData ? (
           <Pie
             data={chartData}
             options={{
               plugins: {
                 title: {
-                  display: true, 
-                  text: "Diet Composition Analysis", 
-                  color: "white", 
+                  display: true,
+                  text: "Diet Composition Analysis",
+                  color: "white",
                   font: {
-                    size: 18, 
-                    weight: "bold", 
+                    size: 18,
+                    weight: "bold",
                   },
                   padding: {
                     top: 10,
-                    bottom: 20, 
+                    bottom: 20,
                   },
                 },
                 legend: {
                   labels: {
-                    color: "white", 
+                    color: "white",
                     font: {
                       size: 14,
                     },
@@ -198,6 +220,7 @@ export default function DocumentUpload() {
           <p className="text-center">Loading chart data...</p>
         )}
       </div>
+      <div>{error && <p className="text-center">{error}</p>}</div>
       <Footer />
     </>
   );

@@ -10,6 +10,7 @@ import statisticstwo from "@/public/images/statisticstwo.svg"
 import { Footer } from "@/components/Footer";
 import SideBar from "@/components/Sidebar";
 import data from "@/data/homedata.json";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -29,9 +30,11 @@ export default function Home() {
           <p className=" text-lg text-start md:text-xl text-white">
             Connecting you to top healthcare providers with ease.
           </p>
-          <Button className="px-6 py-5 mt-5 bg-custom-yellow text-custom-gray  text-md hover:text-white">
+       <Link href={"/chat"}>
+       <Button className="px-6 py-5 mt-5 bg-custom-yellow text-custom-gray  text-md hover:text-white">
             Start Chatting Now
           </Button>
+       </Link>
         </div>
       </div>
       <div className="container mt-10 mx-auto">

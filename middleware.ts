@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyjwttoken } from "./lib/jwt";
 
 const publicRoutes = [ "/login", "/signup","/login/forgotpassword"];
-const protectedRoutes = ["/chat", "/document-upload", "/doctor-contact"];
+const protectedRoutes = ["/chat", "/document-upload", "/doctor-contact","/settings"];
 
 
 
@@ -36,5 +36,6 @@ export const config = {
     "/chat/:path*",
     "/document-upload/:path*",
     "/doctor-contact/:path*",
+    "/settings/:path*"
   ],
 };

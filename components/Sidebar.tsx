@@ -11,7 +11,7 @@ import {
   LogOut,
   MessageSquare,
   Settings,
-  Upload
+  Upload,
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -26,8 +26,9 @@ const logout = async () => {
       return toast.error(data.error || "Something went wrong");
     }
     toast.success(data.message || "Logout successful");
- 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    window.location.reload();
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     toast.error("Failed to log out");
   }
@@ -36,7 +37,9 @@ const logout = async () => {
 export default function SideBar() {
   const [open, setOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<{ username: string; email: string } | null>( null);
+  const [user, setUser] = useState<{ username: string; email: string } | null>(
+    null
+  );
 
   useEffect(() => {
     checkAuth().then(setIsAuthenticated);
@@ -48,7 +51,7 @@ export default function SideBar() {
           setIsAuthenticated(true);
           setUser(data);
         }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
         setIsAuthenticated(false);
         setUser(null);
@@ -131,30 +134,21 @@ export default function SideBar() {
           </ul>
 
           {/* Secondary Links */}
-          <ul className="space-y-4">
-            <Tooltip.Root>
-              <Tooltip.Trigger asChild>
-                <li className="flex items-center gap-4 px-4  cursor-pointer">
-                  <Settings />
-                  {open && <Link href={"/settings"}>Settings</Link>}
-                </li>
-              </Tooltip.Trigger>
-              {!open && (
-                <Tooltip.Content side="right">Settings</Tooltip.Content>
-              )}
-            </Tooltip.Root>
-
-            <Tooltip.Root>
-              <Tooltip.Trigger asChild>
-                <li className="flex items-center gap-4 px-4 cursor-pointer">
-                  <HelpCircle />
-                  {open && <Link href={"/help"}>Help</Link>}
-                </li>
-              </Tooltip.Trigger>
-              {!open && <Tooltip.Content side="right">Help</Tooltip.Content>}
-            </Tooltip.Root>
-          </ul>
-
+          {user && (
+            <ul className="space-y-4">
+              <Tooltip.Root>
+                <Tooltip.Trigger asChild>
+                  <li className="flex items-center gap-4 px-4  cursor-pointer">
+                    <Settings />
+                    {open && <Link href={"/settings"}>Settings</Link>}
+                  </li>
+                </Tooltip.Trigger>
+                {!open && (
+                  <Tooltip.Content side="right">Settings</Tooltip.Content>
+                )}
+              </Tooltip.Root>
+            </ul>
+          )}
           {/* Auth Links */}
           <ul className="space-y-4">
             {isAuthenticated ? (
@@ -169,7 +163,7 @@ export default function SideBar() {
                   </li>
                 </Tooltip.Trigger>
                 {!open && (
-                  <Tooltip.Content side="right" >Logout</Tooltip.Content>
+                  <Tooltip.Content side="right">Logout</Tooltip.Content>
                 )}
               </Tooltip.Root>
             ) : (
@@ -186,39 +180,38 @@ export default function SideBar() {
           </ul>
 
           {/* Footer */}
-         {
-          user &&  <div className="text-black bg-white   flex justify-between">
-          <div className="text-white bg-[#070b14] h-full w-full flex-1 flex justify-center items-center text-3xl py-4">
-                {
-                  user?.username.substring(0,2)
-                }
-          </div>
-         {open && user && (
-           <p className="truncate  p-2    flex-2">
-             {user.username.toUpperCase()} <br />  <span className="text-sm">{user.email}</span>
-           </p>
-         )}
-       </div>
-         }
+          {user && (
+            <div className="text-black bg-white   flex justify-between">
+              <div className="text-white bg-[#070b14] h-full w-full flex-1 flex justify-center items-center text-3xl py-4">
+                {user?.username.substring(0, 1)}
+              </div>
+              {open && user && (
+                <p className="truncate  p-2    flex-2">
+                  {user.username.toUpperCase()} <br />{" "}
+                  <span className="text-sm">{user.email}</span>
+                </p>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
       {/* Mobile Device */}
       <div className="fixed top-4 right-5 px-7 py-4  z-50 bg-[#121736] rounded-full block md:hidden  text-2xl cursor-pointer ">
-        {user?.username.substring(0,2)  }  
+        {user?.username.substring(0, 2)}
       </div>
       <div className="fixed   w-full px-5 bottom-10  z-50 block md:hidden">
         <div className="flex justify-around p-5  bg-[#121736] rounded-full ">
           <Tooltip.Root>
             <Tooltip.Trigger asChild>
-              <HomeIcon  href={"/"} />
+              <HomeIcon href={"/"} />
             </Tooltip.Trigger>
             <Tooltip.Content side="top">Home</Tooltip.Content>
           </Tooltip.Root>
 
           <Tooltip.Root>
             <Tooltip.Trigger asChild>
-              <MessageSquare  href={"/chat"}/>
+              <MessageSquare href={"/chat"} />
             </Tooltip.Trigger>
             <Tooltip.Content side="top">Chat</Tooltip.Content>
           </Tooltip.Root>

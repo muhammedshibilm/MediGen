@@ -22,13 +22,16 @@ export async function POST(
         try{
           
             const hashPassword = await bcrypt.hash(password,SALT_ROUND);
+
+            console.log(username,email,hashPassword);
             //  store the username and password
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const user = await prisma.user.create({
                 data: {
-                    username,
-                    email,
-                    password: hashPassword
+                    username: username.trum(),
+                    email: email.trim(),
+                    password: hashPassword,
+                    updatedAt: new Date()
                 }
             });
 
