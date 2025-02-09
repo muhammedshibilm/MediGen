@@ -47,7 +47,7 @@ export async function GET() {
 
     const healthtipsJson =  items.map((items)=>{
       return {
-         "titile": items["title"],
+         "title": items["title"],
          "description": description(items["content:encoded"]),
          "image":  image(items["content:encoded"]),
          "link" : items["link"]

@@ -12,6 +12,22 @@ const nextConfig: NextConfig = {
     cacheOnFrontEndNav: true,
   
   }),
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "alternativemedicine.com",
+      },
+      {
+        protocol: "https",
+        hostname: "i0.wp.com" 
+      },
+      {
+        protocol: "https",
+        hostname: "facenbodycare.com"
+      }
+    ],
+  },
  
 };
 

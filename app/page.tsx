@@ -12,6 +12,8 @@ import SideBar from "@/components/Sidebar";
 import data from "@/data/homedata.json";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import NewsCard from "@/components/NewsCard";
+import NewsTips from "@/components/TipsCard";
 
 export default function Page() {
   const textVariants = {
@@ -112,9 +114,12 @@ export default function Page() {
           </motion.span>
         </motion.div>
 
-      
+        <div> 
 
-        {/* Key Statistics */}
+          <NewsCard/>
+
+        </div>
+      
         <div className="mt-5">
           <h2 className="text-center my-10 text-xl">Key Statistics</h2>
           <div className="flex  justify-around">
@@ -122,6 +127,8 @@ export default function Page() {
             <Image src={statisticstwo} alt="Verified Doctors" />
           </div>
         </div>
+
+
 
         {/* Weekly Exercise Plan */}
         <h2 className="text-center my-10 text-xl">Weekly Exercise Plan</h2>
@@ -136,6 +143,8 @@ export default function Page() {
             <Download /> Download PDF
           </Button>
         </div>
+
+        <NewsTips/>
 
         {/* Featured Doctors */}
         <h2 className="text-center my-10 text-xl">Featured Doctors</h2>

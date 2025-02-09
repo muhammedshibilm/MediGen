@@ -2,7 +2,7 @@ import { Copyright, Facebook, Linkedin, Twitter, Youtube } from "lucide-react";
 
 export const Footer = () => {
   return (
-    <footer className=" pb-28 pt-10 md:py-20">
+    <footer className="  pt-10 ">
       {/* top */}
       <div className=" flex w-full justify-between container  mx-auto pb-5">
         <h1 className="font-bold text-2xl hidden md:block" style={{ letterSpacing: 2 }}>

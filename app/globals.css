@@ -13,6 +13,8 @@ body {
   background-size: cover; /* Ensure the image covers the viewport */
   color: #F1F6F9; /* Set text color for good contrast */
   overflow-x: hidden; /* Prevent horizontal scrolling issues */
+
+  
 }
 
 
@@ -110,4 +112,10 @@ td{
 tr{
   border-radius: 90%;
  width: fit-content;
+}
+
+
+ul::-webkit-scrollbar{
+  width: 0;
+  scroll-behavior: smooth;
 }

@@ -17,15 +17,16 @@ export async function GET() {
 
     const result = items.map((data, index) => {
       const description = items[index]["contentSnippet"]!.split("Read More")[0];
-      const image = items[1]["content:encoded"].match(/src="(.*?)\"/);
+      const image = items[index]["content:encoded"].match(/src="(.*?)\"/);
 
       return {
-        titile: data["title"],
-        links: data["link"],
+        title: data["title"],
+        link: data["link"],
         description: description,
         image: image[1],
       };
     });
+   
 
     return NextResponse.json({ "message": result }, { status: 200 });
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
