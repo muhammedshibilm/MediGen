@@ -8,7 +8,7 @@ interface Message {
   content: string;
 }
 
-export default function Chat() {
+export default function Page() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>("");
   const socketRef = useRef<WebSocket | null>(null);
@@ -85,7 +85,7 @@ export default function Chat() {
         className="p-2 rounded-md hover:bg-gray-400 focus:outline-none"
         aria-label="Add an image"
       >
-        <Image />
+        <Image role="img" aria-label="Add an image"/>
       </button>
       <button
         className="p-2 rounded-md hover:bg-gray-400 focus:outline-none"

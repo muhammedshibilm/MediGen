@@ -16,7 +16,7 @@ interface ApiResponse {
 
 
 
-export default function Login() {
+export default function Page() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);

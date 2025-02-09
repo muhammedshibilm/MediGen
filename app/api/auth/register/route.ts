@@ -28,7 +28,7 @@ export async function POST(
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const user = await prisma.user.create({
                 data: {
-                    username: username.trum(),
+                    username: username.trim(),
                     email: email.trim(),
                     password: hashPassword,
                     updatedAt: new Date()

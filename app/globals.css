@@ -8,12 +8,14 @@ body {
   margin: 0; /* Remove default margin */
   padding: 0; /* Remove default padding */
   /* Set a fallback background color */
-  background-image: url("/images/pattern.webp"); /* Use separate property for clarity */
+ background-color: #111624; /* Use separate property for clarity */
   background-repeat: no-repeat; /* Prevent repeating the image */
   background-size: cover; /* Ensure the image covers the viewport */
   color: #F1F6F9; /* Set text color for good contrast */
   overflow-x: hidden; /* Prevent horizontal scrolling issues */
 }
+
+
 
 
 

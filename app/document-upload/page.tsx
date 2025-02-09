@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Pie } from "react-chartjs-2";
 import { FileText } from "lucide-react";
+
 import {
   Chart as ChartJS,
   ArcElement,
@@ -32,75 +33,66 @@ interface ChartData {
   data: number[];
 }
 
-export default function DocumentUpload() {
+export default function Page() {
   const [file, setFile] = useState<File | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
-  const [chartData, setChartData] = useState(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [chartData, setChartData] = useState<any>(null); // Use 'any' or a better type if known
   const [error, setError] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [message, setMessage] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setFile(e.target.files[0]);
-      setMessage(e.target.files[0].name);
-    } else {
-      setFile(null);
-      setMessage(null);
     }
   };
 
-  const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!file) {
-      toast.error("No file selected");
+      setMessage("Please select a file.");
       return;
     }
-
+    
     const formData = new FormData();
-    formData.append("files", file); 
+    formData.append("upload", file);
+
+    setLoading(true);
+    setMessage(null);
 
     try {
-      const UPLOAD_URL = "http://localhost:8000/uploads/";
-      const res = await fetch("/api/upload-document", {
+      const response = await fetch("http://localhost:8000/uploads", {
         method: "POST",
-        body: JSON.stringify({ file: file.name }),
+        body: formData,
+        credentials: "include", 
       });
 
-      if (!res.ok) {
-          toast.error("File Upload Failed")
+      if (response.ok) {
+        toast.success("File uploaded successfully!");
+        window.location.reload();
+      } else {
+        const errorData = await response.json();
+        setMessage(errorData.detail || "An error occurred");
       }
-      if (res.ok) {
-        
-        const res = await fetch(UPLOAD_URL,{
-          method: "POST",
-          body: formData
-        });
-
-       
-        if (!res.ok) {
-          toast.error("File upload failed")
-
-        }
-        if (res.ok) {
-          toast.success("File Upload Sucess")
-          window.location.reload()
-        }
-
-      }
-
-      
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      console.error("Upload Error:", error);
-      toast.error("An error occurred while uploading the file");
+      setMessage("An error occurred while uploading the file.");
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     const fetchChartData = async () => {
       try {
-        const res = await fetch("http://localhost:8000/analyze/");
+        const res = await fetch("http://localhost:8000/analyze/", {
+          credentials: "include",
+        });
         if (!res.ok) {
           setError("No analysis data found");
+          return;
         }
 
         const data: ChartData = await res.json();
@@ -133,7 +125,7 @@ export default function DocumentUpload() {
     <>
       <div className="container mx-auto p-4">
         <SideBar />
-        <form method="post" onSubmit={handleUpload}>
+        <form method="post" onSubmit={handleSubmit}>
           <div className="flex flex-col">
             <h1 className="text-2xl font-bold">Upload Medical Document</h1>
             <label
@@ -141,8 +133,8 @@ export default function DocumentUpload() {
               className="self-center w-[70%] h-72 mb-6"
             >
               <div className="w-full h-full rounded-lg bg-gray-500 mt-6 cursor-pointer flex flex-col justify-center items-center">
-                {message ? (
-                  <p>{message}</p>
+                {file ? (
+                  <p>{file.name}</p>
                 ) : (
                   <>
                     <p>Drag file here to upload or link</p>

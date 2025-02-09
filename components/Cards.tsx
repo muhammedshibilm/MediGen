@@ -40,6 +40,7 @@ interface CardProps extends CardType {
   data: Data[];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const Cards = ({ styletype, flexcol, colored, data }: CardProps) => {
   const style: Styles = {
     healthnews: {
@@ -56,20 +57,7 @@ export const Cards = ({ styletype, flexcol, colored, data }: CardProps) => {
         text: "Read More",
       },
     },
-    healthtips: {
-      cardstyle: {
-        width: "w-[500px]",
-        height: "h-[200px]",
-      },
-      image: {
-        width: 310,
-        height: 24,
-        display: "block",
-      },
-      button: {
-        text: "Watch Video",
-      },
-    },
+   
 
     weekelyplan: {
       cardstyle: {

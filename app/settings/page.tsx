@@ -9,6 +9,7 @@ export default function Page() {
   const router = useRouter();
   const [selectedSection, setSelectedSection] = useState<string | null>("profile");
   const [user, setUser] = useState<{ username: string; email: string } | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [history, setHistory] = useState<any[]>([]);
 
   const backButton = (): void => {

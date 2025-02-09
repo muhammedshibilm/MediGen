@@ -5,7 +5,6 @@ import {
   ArrowLeftToLine,
   ArrowRightToLine,
   Contact,
-  HelpCircle,
   HomeIcon,
   LogIn,
   LogOut,
@@ -17,6 +16,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import * as Tooltip from "@radix-ui/react-tooltip";
+import { motion } from "framer-motion";
 
 const logout = async () => {
   try {
@@ -27,8 +27,7 @@ const logout = async () => {
     }
     toast.success(data.message || "Logout successful");
     window.location.reload();
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     toast.error("Failed to log out");
   }
@@ -51,7 +50,7 @@ export default function SideBar() {
           setIsAuthenticated(true);
           setUser(data);
         }
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
         setIsAuthenticated(false);
         setUser(null);
@@ -60,15 +59,34 @@ export default function SideBar() {
     fetchUser();
   }, []);
 
+  const itemVariants = {
+    hidden: { x: -100, opacity: 0 },
+    visible: (i: number) => ({
+      x: 0,
+      opacity: 1,
+      transition: {
+        delay: i * 0.15,
+        duration: 0.4,
+        ease: "easeInOut",
+      },
+    }),
+  };
+
+  const menuItems = [
+    { href: "/", icon: HomeIcon, label: "Home" },
+    { href: "/chat", icon: MessageSquare, label: "Chat" },
+    { href: "/doctor-contact", icon: Contact, label: "Contact" },
+    { href: "/document-upload", icon: Upload, label: "Upload" },
+    { href: "/settings", icon: Settings, label: "Settings" },
+  ];
+
   return (
     <Tooltip.Provider>
-      {/* Above medium device  */}
       <div
         className={`fixed top-0 left-0 h-screen bg-[#111624] z-50 transition-all duration-300 hidden md:block ${
           open ? "w-52" : "w-14"
         }`}
       >
-        {/* Sidebar Header */}
         <div className="text-white p-4 flex items-center justify-between">
           {open && (
             <h2 className="text-xl font-bold" style={{ letterSpacing: 2 }}>
@@ -88,147 +106,73 @@ export default function SideBar() {
           )}
         </div>
 
-        {/* Sidebar Content */}
-        <div className={`text-white flex flex-col justify-around  h-full`}>
-          {/* Navigation Links */}
+        <div className="text-white flex flex-col justify-around h-full">
           <ul className="space-y-4">
-            <Tooltip.Root>
-              <Tooltip.Trigger asChild>
-                <li className="flex items-center gap-4 px-4 cursor-pointer">
-                  <HomeIcon />
-                  {open && <Link href={"/"}>Home</Link>}
-                </li>
-              </Tooltip.Trigger>
-              {!open && <Tooltip.Content side="right">Home</Tooltip.Content>}
-            </Tooltip.Root>
-
-            <Tooltip.Root>
-              <Tooltip.Trigger asChild>
-                <li className="flex items-center gap-4 px-4  cursor-pointer">
-                  <MessageSquare />
-                  {open && <Link href={"/chat"}>Chat</Link>}
-                </li>
-              </Tooltip.Trigger>
-              {!open && <Tooltip.Content side="right">Chat</Tooltip.Content>}
-            </Tooltip.Root>
-
-            <Tooltip.Root>
-              <Tooltip.Trigger asChild>
-                <li className="flex items-center gap-4 px-4  cursor-pointer">
-                  <Contact />
-                  {open && <Link href={"/doctor-contact"}>Contact</Link>}
-                </li>
-              </Tooltip.Trigger>
-              {!open && <Tooltip.Content side="right">Contact</Tooltip.Content>}
-            </Tooltip.Root>
-
-            <Tooltip.Root>
-              <Tooltip.Trigger asChild>
-                <li className="flex items-center gap-4 px-4 cursor-pointer">
-                  <Upload />
-                  {open && <Link href={"/document-upload"}>Upload</Link>}
-                </li>
-              </Tooltip.Trigger>
-              {!open && <Tooltip.Content side="right">Upload</Tooltip.Content>}
-            </Tooltip.Root>
+            {menuItems.map((item, i) => (
+              <motion.li
+                key={item.href}
+                custom={i}
+                initial="hidden"
+                animate="visible"
+                variants={itemVariants}
+                className="flex items-center gap-4 px-4 cursor-pointer"
+              >
+                <Link href={item.href}>
+                  <item.icon />
+                </Link>
+                {open && <Link href={item.href}>{item.label}</Link>}
+              </motion.li>
+            ))}
           </ul>
 
-          {/* Secondary Links */}
-          {user && (
-            <ul className="space-y-4">
-              <Tooltip.Root>
-                <Tooltip.Trigger asChild>
-                  <li className="flex items-center gap-4 px-4  cursor-pointer">
-                    <Settings />
-                    {open && <Link href={"/settings"}>Settings</Link>}
-                  </li>
-                </Tooltip.Trigger>
-                {!open && (
-                  <Tooltip.Content side="right">Settings</Tooltip.Content>
-                )}
-              </Tooltip.Root>
-            </ul>
-          )}
-          {/* Auth Links */}
           <ul className="space-y-4">
             {isAuthenticated ? (
-              <Tooltip.Root>
-                <Tooltip.Trigger asChild>
-                  <li
-                    className="flex items-center gap-4 px-4  cursor-pointer"
-                    onClick={logout}
-                  >
-                    <LogOut color="red" />
-                    {open && <p>Logout</p>}
-                  </li>
-                </Tooltip.Trigger>
-                {!open && (
-                  <Tooltip.Content side="right">Logout</Tooltip.Content>
-                )}
-              </Tooltip.Root>
+              <motion.li
+                custom={menuItems.length}
+                initial="hidden"
+                animate="visible"
+                variants={itemVariants}
+                className="flex items-center gap-4 px-4 cursor-pointer"
+                onClick={logout}
+              >
+                <LogOut color="red" />
+                {open && <p>Logout</p>}
+              </motion.li>
             ) : (
-              <Tooltip.Root>
-                <Tooltip.Trigger asChild>
-                  <li className="flex items-center gap-4 px-4  cursor-pointer">
-                    <LogIn />
-                    {open && <Link href={"/login"}>Login</Link>}
-                  </li>
-                </Tooltip.Trigger>
-                {!open && <Tooltip.Content side="right">Login</Tooltip.Content>}
-              </Tooltip.Root>
+              <motion.li
+                custom={menuItems.length}
+                initial="hidden"
+                animate="visible"
+                variants={itemVariants}
+                className="flex items-center gap-4 px-4 cursor-pointer"
+              >
+                <Link href="/login">
+                  <LogIn />
+                </Link>
+                {open && <Link href="/login">Login</Link>}
+              </motion.li>
             )}
           </ul>
 
-          {/* Footer */}
           {user && (
-            <div className="text-black bg-white   flex justify-between">
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={itemVariants}
+              custom={menuItems.length + 1}
+              className="text-black bg-white flex justify-between"
+            >
               <div className="text-white bg-[#070b14] h-full w-full flex-1 flex justify-center items-center text-3xl py-4">
                 {user?.username.substring(0, 1)}
               </div>
               {open && user && (
-                <p className="truncate  p-2    flex-2">
-                  {user.username.toUpperCase()} <br />{" "}
+                <p className="truncate p-2 flex-2">
+                  {user.username.toUpperCase()} <br />
                   <span className="text-sm">{user.email}</span>
                 </p>
               )}
-            </div>
+            </motion.div>
           )}
-        </div>
-      </div>
-
-      {/* Mobile Device */}
-      <div className="fixed top-4 right-5 px-7 py-4  z-50 bg-[#121736] rounded-full block md:hidden  text-2xl cursor-pointer ">
-        {user?.username.substring(0, 2)}
-      </div>
-      <div className="fixed   w-full px-5 bottom-10  z-50 block md:hidden">
-        <div className="flex justify-around p-5  bg-[#121736] rounded-full ">
-          <Tooltip.Root>
-            <Tooltip.Trigger asChild>
-              <HomeIcon href={"/"} />
-            </Tooltip.Trigger>
-            <Tooltip.Content side="top">Home</Tooltip.Content>
-          </Tooltip.Root>
-
-          <Tooltip.Root>
-            <Tooltip.Trigger asChild>
-              <MessageSquare href={"/chat"} />
-            </Tooltip.Trigger>
-            <Tooltip.Content side="top">Chat</Tooltip.Content>
-          </Tooltip.Root>
-
-          <Tooltip.Root>
-            <Tooltip.Trigger asChild>
-              <Contact href={"/doctor-contact"} />
-            </Tooltip.Trigger>
-            <Tooltip.Content side="top">Contact</Tooltip.Content>
-          </Tooltip.Root>
-
-          <Tooltip.Root>
-            <Tooltip.Trigger asChild>
-              <Upload href={"/document-upload"} />
-            </Tooltip.Trigger>
-            <Tooltip.Content side="top">Upload</Tooltip.Content>
-          </Tooltip.Root>
         </div>
       </div>
     </Tooltip.Provider>

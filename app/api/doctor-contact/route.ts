@@ -1,6 +1,6 @@
 import { verifyjwttoken } from "@/lib/jwt";
 import { NextRequest, NextResponse } from "next/server";
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
 
     const { name, medicalcon, preferdate, doctor } = await req.json();
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const appoinment = await prisma.appoinment.create({
       data: {
         doctor,

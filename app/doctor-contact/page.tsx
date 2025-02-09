@@ -9,7 +9,7 @@ import ActiveDocCard from "@/components/Activedoccard";
 import Image from "next/image";
 import { toast } from "sonner";
 
-export default function DoctorContact() {
+export default function Page() {
   const [data, setData] = useState({
     name: "",
     medicalcon: "",
@@ -26,6 +26,7 @@ export default function DoctorContact() {
 
   const [ticketUrl, setTicketUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [pngUrl, setPngUrl] = useState<string | null>(null);
 
   // Handle input changes
@@ -87,6 +88,7 @@ export default function DoctorContact() {
         const errorResponse = await response.json();
         toast.error(errorResponse.detail || "Failed to generate ticket.");
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("An unexpected error occurred. Please try again later.");
     } finally {
