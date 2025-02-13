@@ -97,7 +97,7 @@ export const Cards = ({ styletype, flexcol, colored, data }: CardProps) => {
       {data.map((item) => (
         <div
           key={item.id}
-          className={`cards bg-card-gradient ${
+          className={`cards ml-14 bg-card-gradient ${
             cuttentstyle.cardstyle.width
           } ${
             cuttentstyle.cardstyle.height
@@ -120,7 +120,7 @@ export const Cards = ({ styletype, flexcol, colored, data }: CardProps) => {
               />
             ) : null}
           </Suspense>
-          <div className="px-6  space-y-2">
+          <div className="px-6   space-y-2">
             <h1 className=" text-white font-bold text-lg">{item.title}</h1>
             <p className="text-[#D6E0FF] font-normal">
              {item.description}

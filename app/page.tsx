@@ -120,13 +120,20 @@ export default function Page() {
 
         </div>
       
-        <div className="mt-5">
+        <motion.div 
+        variants={childVariants}
+        initial={"hidden"}
+        whileInView={"show"}
+        viewport={{once: true}}
+        className="mt-5">
           <h2 className="text-center my-10 text-xl">Key Statistics</h2>
-          <div className="flex  justify-around">
+          <motion.div
+           
+          className="flex  justify-around">
             <Image src={statisticsone} alt="Pateneit served" />
             <Image src={statisticstwo} alt="Verified Doctors" />
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
 
 

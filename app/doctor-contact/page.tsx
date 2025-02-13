@@ -150,7 +150,7 @@ export default function Page() {
           <DoctorCards />
         </div>
 
-        <div className="flex flex-wrap justify-around gap-10 pt-24">
+        <div className=" grid grid-cols-3 place-items-center gap-10 pt-24">
           <ActiveDocCard />
           <ActiveDocCard />
           <ActiveDocCard />

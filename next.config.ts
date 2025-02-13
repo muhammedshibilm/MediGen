@@ -25,6 +25,9 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "facenbodycare.com"
+      },{
+        protocol: "https",
+        hostname: "s.w.org"
       }
     ],
   },

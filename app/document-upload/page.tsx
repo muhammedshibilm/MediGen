@@ -127,7 +127,7 @@ export default function Page() {
         <SideBar />
         <form method="post" onSubmit={handleSubmit}>
           <div className="flex flex-col">
-            <h1 className="text-2xl font-bold">Upload Medical Document</h1>
+            <h1 className="text-2xl font-bold text-center">Upload Medical Document</h1>
             <label
               htmlFor="file-upload"
               className="self-center w-[70%] h-72 mb-6"

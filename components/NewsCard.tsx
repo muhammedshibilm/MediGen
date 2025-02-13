@@ -37,7 +37,7 @@ export default function NewsCard() {
     <div className="p-4">
       <h1 className="text-2xl text-center   my-6">Health News</h1>
       {loading ? (
-        <ul className="flex gap-6 overflow-x-auto w-screen p-4">
+        <ul className="flex gap-6 overflow-x-auto ml-14 w-screen p-4">
           {Array(4)
             .fill(null)
             .map((_, index) => (
@@ -54,7 +54,7 @@ export default function NewsCard() {
             ))}
         </ul>
       ) : (
-        <ul className="flex gap-6 overflow-x-auto w-screen p-4">
+        <ul className="flex gap-6 overflow-x-auto ml-14 p-4">
           {data.slice(0, 4).map((item, index) => (
             <motion.li
              
