@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useNetworkStatus } from "../context/networkStatus";
 
 interface RssItem {
   title: string;
@@ -16,6 +17,7 @@ interface RssItem {
 export default function NewsTips() {
   const [data, setData] = useState<RssItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const { isOnline } = useNetworkStatus();
 
   useEffect(() => {
     const fetchRSS = async () => {
@@ -30,14 +32,20 @@ export default function NewsTips() {
       }
     };
 
-    fetchRSS();
-  }, []);
+    if (isOnline) {
+      fetchRSS();
+    } else {
+      setLoading(false);
+    }
+  }, [isOnline]);
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl text-center   my-6">Health Tips</h1>
-      {loading ? (
-        <ul className="flex gap-6 overflow-x-auto ml-14 p-4">
+      <h1 className="text-2xl text-center my-6">Health Tips</h1>
+      {!isOnline ? (
+        <p className="text-center text-red-500">You are offline. Please check your internet connection.</p>
+      ) : loading ? (
+        <ul className="flex gap-6 overflow-x-auto mx-auto p-4">
           {Array(4)
             .fill(null)
             .map((_, index) => (
@@ -54,19 +62,13 @@ export default function NewsTips() {
             ))}
         </ul>
       ) : (
-        <ul className="flex gap-6 overflow-x-auto w-screen ml-14 p-4">
+        <ul className="flex gap-6 overflow-x-auto w-screen mx-auto p-4">
           {data.slice(0, 4).map((item, index) => (
             <motion.li
-             
-              initial={{
-                scale: 1
-              }}
-
+              initial={{ scale: 1 }}
               whileHover={{
                 scale: 1.02,
-                transition:{
-                  duration: 0.2
-                }
+                transition: { duration: 0.2 },
               }}
               key={index}
               className="flex flex-col flex-shrink-0 justify-evenly w-[400px] bg-white shadow-md rounded-lg p-4 border border-gray-200 space-y-4"
@@ -84,12 +86,7 @@ export default function NewsTips() {
               <p className="text-gray-500 font-semibold mt-2">
                 {item.description}
               </p>
-              <Link
-                href={item.link}
-                target="_blank"
-               
-                className="mt-4"
-              >
+              <Link href={item.link} target="_blank" className="mt-4">
                 <Button className="w-full py-5">Read More</Button>
               </Link>
             </motion.li>

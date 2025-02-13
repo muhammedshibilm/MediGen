@@ -4,6 +4,7 @@ import SideBar from "@/components/Sidebar";
 import { Image, MoreVertical, Plus, SendIcon } from "lucide-react";
 import { CircleLoader } from "react-spinners";
 import ReactMarkdown from "react-markdown";
+import { useNetworkStatus } from "@/context/networkStatus";
 
 interface Message {
   text: string;
@@ -16,27 +17,30 @@ export default function Chat() {
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
+  const { isOnline } = useNetworkStatus();
 
   useEffect(() => {
-    const socket = new WebSocket("wss://e8ed-34-30-152-118.ngrok-free.app/chat");
+    if (isOnline) {
+      const socket = new WebSocket("wss://e8ed-34-30-152-118.ngrok-free.app/chat");
 
-    socket.onopen = () => console.log("Connected to WebSocket");
+      socket.onopen = () => console.log("Connected to WebSocket");
 
-    socket.onmessage = (event: MessageEvent) => {
-      const data = JSON.parse(event.data);
-      const formattedText = data.message.replace(/\\n/g, "\n"); 
-  
-      setMessages((prev) => [...prev, { text: formattedText, sender: "ai" }]);
-      setLoading(false);
-    };
+      socket.onmessage = (event: MessageEvent) => {
+        const data = JSON.parse(event.data);
+        const formattedText = data.message.replace(/\\n/g, "\n");
 
-    socket.onerror = (error: Event) => {
-      console.error("WebSocket Error:", error);
-    };
+        setMessages((prev) => [...prev, { text: formattedText, sender: "ai" }]);
+        setLoading(false);
+      };
 
-    setWs(socket);
-    return () => socket.close();
-  }, []);
+      socket.onerror = (error: Event) => {
+        console.error("WebSocket Error:", error);
+      };
+
+      setWs(socket);
+      return () => socket.close();
+    }
+  }, [isOnline]);
 
   const sendMessage = () => {
     if (ws && input.trim()) {
@@ -73,32 +77,38 @@ export default function Chat() {
           className="flex-1 overflow-y-auto p-4 space-y-4 w-[90%] mx-auto scrollbar-hide"
           style={{ paddingBottom: "5rem" }}
         >
-          {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`flex ${
-                msg.sender === "human" ? "justify-end" : "justify-start"
-              }`}
-            >
-              <div
-                className={`${
-                  msg.sender === "human"
-                    ? "bg-blue-500 text-white rounded-tl-lg rounded-bl-lg rounded-br-lg"
-                    : "bg-gray-300 w-[80vw] text-black rounded-bl-lg rounded-tr-lg rounded-br-lg"
-                } px-6 py-2 max-w-xs shadow-md`}
-              >
-                {msg.sender === "ai" ? (
-                  <ReactMarkdown>{msg.text}</ReactMarkdown>
-                ) : (
-                  <p>{msg.text}</p>
-                )}
-              </div>
-            </div>
-          ))}
-          {loading && (
-            <div className="flex justify-start">
-              <CircleLoader color="#0E86D4" size={40} />
-            </div>
+          {!isOnline ? (
+            <p className="text-center text-red-500">You are offline. Please check your internet connection.</p>
+          ) : (
+            <>
+              {messages.map((msg, index) => (
+                <div
+                  key={index}
+                  className={`flex ${
+                    msg.sender === "human" ? "justify-end" : "justify-start"
+                  }`}
+                >
+                  <div
+                    className={`${
+                      msg.sender === "human"
+                        ? "bg-blue-500 text-white rounded-tl-lg rounded-bl-lg rounded-br-lg"
+                        : "bg-gray-300 w-[80vw] text-black rounded-bl-lg rounded-tr-lg rounded-br-lg"
+                    } px-6 py-2 max-w-xs shadow-md`}
+                  >
+                    {msg.sender === "ai" ? (
+                      <ReactMarkdown>{msg.text}</ReactMarkdown>
+                    ) : (
+                      <p>{msg.text}</p>
+                    )}
+                  </div>
+                </div>
+              ))}
+              {loading && (
+                <div className="flex justify-start">
+                  <CircleLoader color="#0E86D4" size={40} />
+                </div>
+              )}
+            </>
           )}
         </div>
 
@@ -125,7 +135,7 @@ export default function Chat() {
           <div className="flex-1">
             <input
               type="text"
-              disabled={loading}
+              disabled={loading || !isOnline}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -137,7 +147,7 @@ export default function Chat() {
             onClick={sendMessage}
             className="p-2 rounded-md hover:bg-blue-400 focus:outline-none text-blue-500"
             aria-label="Send message"
-            disabled={loading}
+            disabled={loading || !isOnline}
           >
             <SendIcon />
           </button>
