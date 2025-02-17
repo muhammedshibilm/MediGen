@@ -21,7 +21,7 @@ export default function Chat() {
 
   useEffect(() => {
     if (isOnline) {
-      const socket = new WebSocket("wss://e8ed-34-30-152-118.ngrok-free.app/chat");
+      const socket = new WebSocket("wss://65ef-34-45-227-198.ngrok-free.app/chat");
 
       socket.onopen = () => console.log("Connected to WebSocket");
 
@@ -112,7 +112,7 @@ export default function Chat() {
           )}
         </div>
 
-        <div className="w-[90%] shadow-md p-4 fixed bottom-0 flex items-center gap-4 mx-auto bg-black">
+        <div className="w-[90%] shadow-md p-4 fixed bottom-0 flex items-center gap-4 ml-24 bg-black">
           <button
             className="p-2 rounded-md hover:bg-gray-400 focus:outline-none"
             aria-label="Add an attachment"

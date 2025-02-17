@@ -39,10 +39,7 @@ export default function Page() {
     if (!form.password) {
       newErrors.password = "Password is required.";
       isValid = false;
-    } else if (form.password.length < 3) {
-      newErrors.password = "Password must be at least 6 characters.";
-      isValid = false;
-    }
+    } 
 
     setErrors(newErrors);
     return isValid;

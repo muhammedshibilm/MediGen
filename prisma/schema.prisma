@@ -13,13 +13,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  id Int @id @default(autoincrement())
-  username String @unique
-  email String @unique
-  password String
+model User {
+  id        Int     @id @default(autoincrement())
+  username  String  @unique
+  email     String  @unique
+  password  String
+  isVerified Boolean @default(false)
+  verificationToken String? @unique   
   createdAt DateTime @default(now())
-  updatedAt DateTime 
+  updatedAt DateTime
   appoinments Appoinment[]
   uploads Upload[]
 }

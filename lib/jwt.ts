@@ -11,8 +11,10 @@ interface DecodedToken{
 
 export function verifyjwttoken(token: string): DecodedToken | null{
     try {
-
+        
+    
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as DecodedToken;
+        console.log(process.env.JWT_SECRET)
         return decoded;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {

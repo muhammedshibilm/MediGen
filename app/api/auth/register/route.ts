@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { sendVerificationEmail } from "@/lib/mail";
+import crypto from "crypto";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const bcrypt = require("bcrypt")
 
@@ -21,9 +23,14 @@ export async function POST(
 
         try{
           
-            const hashPassword = await bcrypt.hash(password,SALT_ROUND);
+            const existingUser = await prisma.user.findUnique({ where: { email } });
+            if (existingUser) {
+              return NextResponse.json({ error: "Email already exists" }, { status: 400 });
+            }
 
-            console.log(username,email,hashPassword);
+            
+            const hashPassword = await bcrypt.hash(password,SALT_ROUND);
+            const verificationToken = crypto.randomBytes(32).toString("hex");
             //  store the username and password
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const user = await prisma.user.create({
@@ -35,16 +42,11 @@ export async function POST(
                 }
             });
 
-               
-        return NextResponse.json({
-            "message": "account created sucessfull"
-        },{status: 201})
-            
-        }catch(error){
-            console.error(error);
-            return NextResponse.json({
-                error: "Failded to create user"
-            },{status: 500})
-            
-        }  
-}
+            await sendVerificationEmail(email, verificationToken);
+
+            return NextResponse.json({ message: "User registered. Please verify your email." }, { status: 201 });
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          } catch (error) {
+            return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+          }
+        }
