@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-import { sendVerificationEmail } from "@/lib/mail";
-import crypto from "crypto";
+
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
 
 
-const prisma = new PrismaClient()
+
+const prisma = new PrismaClient();
 
 const SALT_ROUND = parseInt(process.env.SALT_ROUND!);
 
@@ -30,7 +30,7 @@ export async function POST(
 
             
             const hashPassword = await bcrypt.hash(password,SALT_ROUND);
-            const verificationToken = crypto.randomBytes(32).toString("hex");
+
             //  store the username and password
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const user = await prisma.user.create({
@@ -42,8 +42,7 @@ export async function POST(
                 }
             });
 
-            await sendVerificationEmail(email, verificationToken);
-
+     
             return NextResponse.json({ message: "User registered. Please verify your email." }, { status: 201 });
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           } catch (error) {

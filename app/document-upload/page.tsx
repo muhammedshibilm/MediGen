@@ -63,7 +63,7 @@ export default function Page() {
     setMessage(null);
 
     try {
-      const response = await fetch("http://localhost:8000/uploads", {
+      const response = await fetch("http://127.0.0.1:8080/uploads", {
         method: "POST",
         body: formData,
         credentials: "include", 
@@ -87,7 +87,7 @@ export default function Page() {
   useEffect(() => {
     const fetchChartData = async () => {
       try {
-        const res = await fetch("http://localhost:8000/analyze/", {
+        const res = await fetch("http://127.0.0.1:8080/analyze/", {
           credentials: "include",
         });
         if (!res.ok) {

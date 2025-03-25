@@ -46,6 +46,8 @@ export async function POST(
             algorithm: "HS256"
         });
 
+        console.warn(process.env.JWT_SECRET)
+
         const response = NextResponse.json({"message":"Logged in successfully"});
 
         response.cookies.set({

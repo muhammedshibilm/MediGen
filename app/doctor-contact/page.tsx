@@ -67,7 +67,7 @@ export default function Page() {
 
     setLoading(true);
     try {
-      const response = await fetch("http://127.0.0.1:8000/doctact-contact", {
+      const response = await fetch("http://127.0.0.1:8080/doctact-contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

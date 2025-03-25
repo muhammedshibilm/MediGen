@@ -77,7 +77,7 @@ export default function Page() {
 
       if (res.ok) {
         toast.success(resMessage.message || "Account created successfully!");
-        route.replace("/verify-email")
+        route.replace("/login")
 
       } else {
         toast.error(resMessage.error || "Failed to create account");

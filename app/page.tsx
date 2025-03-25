@@ -116,7 +116,7 @@ export default function Page() {
 
         <div> 
 
-          <NewsCard/>
+
 
         </div>
       
@@ -151,7 +151,7 @@ export default function Page() {
           </Button>
         </div>
 
-        <NewsTips/>
+
 
         {/* Featured Doctors */}
         <h2 className="text-center my-10 text-xl">Featured Doctors</h2>
