@@ -2,24 +2,25 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import SideBar from "@/components/Sidebar";
-import {
-  Image,
-  Plus,
-  SendIcon,
-  ThumbsUp,
-  ThumbsDown
-} from "lucide-react";
+import { Image as ImageIcon, Plus, SendIcon, ThumbsUp, ThumbsDown } from "lucide-react";
 import { CircleLoader } from "react-spinners";
 import ReactMarkdown from "react-markdown";
 import { useNetworkStatus } from "@/context/networkStatus";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { motion, AnimatePresence } from "framer-motion";
+import Image  from "next/image";
+import ai_avathar from "../../public/android/android-launchericon-144-144.png";
 
 interface Message {
   text: string;
   sender: "human" | "ai";
   feedbackGiven?: boolean;
+}
+
+interface AuthData {
+  token: string;
+  isAdmin: boolean;
 }
 
 // Custom hook to manage WebSocket connection
@@ -28,21 +29,18 @@ function useChatSocket(isOnline: boolean, token: string | null) {
 
   useEffect(() => {
     if (!isOnline || !token) return;
-
     const ws = new WebSocket(`ws://127.0.0.1:8000/chat?token=${token}`);
     ws.onopen = () => console.log("Connected to WebSocket");
     ws.onerror = (error) => console.error("WebSocket Error:", error);
     setSocket(ws);
-
     return () => {
       ws.close();
     };
   }, [isOnline, token]);
-
   return socket;
 }
 
-// Modal component with Framer Motion animation (dark background, white text)
+// Modal component with Framer Motion animation
 function Modal({
   isOpen,
   onClose,
@@ -71,7 +69,9 @@ function Modal({
           >
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold text-white">{title}</h2>
-              <button onClick={onClose} className="text-gray-300 text-2xl">&times;</button>
+              <button onClick={onClose} className="text-gray-300 text-2xl">
+                &times;
+              </button>
             </div>
             <div className="text-white">{children}</div>
           </motion.div>
@@ -86,10 +86,11 @@ export default function ChatPage() {
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [authToken, setAuthToken] = useState<string | null>(null);
-  // Loading state for modal submissions (symptom, drug, treatment)
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  // Loading states for modals and training
   const [modalLoading, setModalLoading] = useState<boolean>(false);
-  // Separate loading state for retraining process
   const [retrainLoading, setRetrainLoading] = useState<boolean>(false);
+  const [csvTrainLoading, setCsvTrainLoading] = useState<boolean>(false);
 
   const [showSymptomModal, setShowSymptomModal] = useState(false);
   const [symptomsInput, setSymptomsInput] = useState<string>("");
@@ -102,49 +103,46 @@ export default function ChatPage() {
     medical_history: "",
     allergies: "",
     current_medications: "",
-    symptoms: ""
+    symptoms: "",
   });
 
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { isOnline } = useNetworkStatus();
 
-  // 1. Fetch auth info (token) from the API
-  const getAuthInfo = useCallback(async (): Promise<string> => {
+  // Fetch auth info from your API
+  const getAuthInfo = useCallback(async (): Promise<AuthData> => {
     const res = await fetch("/api/auth/me");
     if (!res.ok) {
       throw new Error("Unauthorized");
     }
     const data = await res.json();
-    return data.token;
+    return { token: data.token, isAdmin: data.isAdmin };
   }, []);
 
-  // 2. Retrieve token on mount (or when needed)
   useEffect(() => {
     (async () => {
       try {
-        const token = await getAuthInfo();
+        const { token, isAdmin } = await getAuthInfo();
         setAuthToken(token);
+        setIsAdmin(isAdmin);
       } catch (error) {
         console.error("Error retrieving auth token:", error);
       }
     })();
   }, [getAuthInfo]);
 
-  // 3. Set up WebSocket connection using custom hook
   const ws = useChatSocket(isOnline, authToken);
 
-  // 4. WebSocket message handler
   useEffect(() => {
     if (!ws) return;
-
     ws.onmessage = (event: MessageEvent) => {
       try {
         const data = JSON.parse(event.data);
         const formattedText = data.message.replace(/\\n/g, "\n");
         setMessages((prev) => [
           ...prev,
-          { text: formattedText, sender: "ai", feedbackGiven: false }
+          { text: formattedText, sender: "ai", feedbackGiven: false },
         ]);
       } catch (error) {
         console.error("Error parsing WebSocket message:", error);
@@ -154,27 +152,22 @@ export default function ChatPage() {
     };
   }, [ws]);
 
-  // 5. Send a message via WebSocket
   const sendMessage = () => {
     if (ws && input.trim()) {
       ws.send(input);
-      setMessages((prev) => [
-        ...prev,
-        { text: input, sender: "human" }
-      ]);
+      setMessages((prev) => [...prev, { text: input, sender: "human" }]);
       setInput("");
       setLoading(true);
     }
   };
 
-  // 6. Handle "Enter" key to send
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
       sendMessage();
     }
   };
 
-  // 7. File upload handling
   const handleUploadClick = () => {
     fileInputRef.current?.click();
   };
@@ -188,15 +181,14 @@ export default function ChatPage() {
       }
       const formData = new FormData();
       formData.append("file", file);
-
       try {
         if (!authToken) throw new Error("Missing auth token");
         const response = await fetch("http://127.0.0.1:8000/upload", {
           method: "POST",
           body: formData,
           headers: {
-            Authorization: `Bearer ${authToken}`
-          }
+            Authorization: `Bearer ${authToken}`,
+          },
         });
         const data = await response.json();
         if (response.ok) {
@@ -213,12 +205,10 @@ export default function ChatPage() {
     }
   };
 
-  // 8. Send feedback to the API
   const handleFeedback = async (index: number, isPositive: boolean) => {
     const aiMessage = messages[index];
-    if (!aiMessage || aiMessage.sender !== "ai" || aiMessage.feedbackGiven) return;
-
-    // Find the last human message preceding this AI message
+    if (!aiMessage || aiMessage.sender !== "ai" || aiMessage.feedbackGiven)
+      return;
     let userQuery = "";
     for (let i = index - 1; i >= 0; i--) {
       if (messages[i].sender === "human") {
@@ -226,20 +216,20 @@ export default function ChatPage() {
         break;
       }
     }
-
+    const feedbackLabel =  isPositive ? "medical" : "non-medical";
     try {
       if (!authToken) throw new Error("Missing auth token");
       const res = await fetch("http://127.0.0.1:8000/feedback", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`
+          Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify({
           query: userQuery,
           response_text: aiMessage.text,
-          feedback_label: isPositive ? "medical" : "non-medical"
-        })
+          feedback_label: feedbackLabel,
+        }),
       });
       const data = await res.json();
       if (res.ok) {
@@ -258,7 +248,6 @@ export default function ChatPage() {
     }
   };
 
-  // 9. Retrain model handler
   const handleRetrain = async () => {
     try {
       if (!authToken) throw new Error("Missing auth token");
@@ -266,9 +255,7 @@ export default function ChatPage() {
       toast.info("Retraining model, please wait...");
       const res = await fetch("http://127.0.0.1:8000/retrain", {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${authToken}`
-        }
+        headers: { Authorization: `Bearer ${authToken}` },
       });
       const data = await res.json();
       if (res.ok) {
@@ -284,16 +271,35 @@ export default function ChatPage() {
     }
   };
 
-  // 10. Auto-scroll chat container on new messages
+  const handleTrainCSV = async () => {
+    try {
+      if (!authToken) throw new Error("Missing auth token");
+      setCsvTrainLoading(true);
+      toast.info("Training CSV data, please wait...");
+      const res = await fetch("http://127.0.0.1:8000/train-csv", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+      const data = await res.json();
+      if (res.ok) {
+        toast.success(`CSV Training complete: ${data.message}`);
+      } else {
+        toast.error(data.error || "CSV Training error.");
+      }
+    } catch (error) {
+      toast.error("Error training CSV data.");
+      console.error("CSV Training error:", error);
+    } finally {
+      setCsvTrainLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
-  // Handlers for modals
-
-  // Symptom Checker modal submit
   const handleSymptomSubmit = async () => {
     if (!symptomsInput.trim()) return;
     try {
@@ -304,9 +310,11 @@ export default function ChatPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`
+          Authorization: `Bearer ${authToken}`,
         },
-        body: JSON.stringify({ symptoms: symptomsInput.split(",").map(s => s.trim()) })
+        body: JSON.stringify({
+          symptoms: symptomsInput.split(",").map((s) => s.trim()),
+        }),
       });
       const data = await res.json();
       if (res.ok) {
@@ -314,7 +322,7 @@ export default function ChatPage() {
         setMessages((prev) => [
           ...prev,
           { text: `Symptoms: ${symptomsInput}`, sender: "human" },
-          { text: data.message, sender: "ai", feedbackGiven: false }
+          { text: data.message, sender: "ai", feedbackGiven: false },
         ]);
       } else {
         toast.error(data.error || "Symptom checker error.");
@@ -328,7 +336,6 @@ export default function ChatPage() {
     }
   };
 
-  // Drug Interaction Checker modal submit
   const handleDrugSubmit = async () => {
     if (!drugInput.trim()) return;
     try {
@@ -339,9 +346,11 @@ export default function ChatPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`
+          Authorization: `Bearer ${authToken}`,
         },
-        body: JSON.stringify({ drugs: drugInput.split(",").map(d => d.trim()) })
+        body: JSON.stringify({
+          drugs: drugInput.split(",").map((d) => d.trim()),
+        }),
       });
       const data = await res.json();
       if (res.ok) {
@@ -349,7 +358,7 @@ export default function ChatPage() {
         setMessages((prev) => [
           ...prev,
           { text: `Drug check: ${drugInput}`, sender: "human" },
-          { text: data.message, sender: "ai", feedbackGiven: false }
+          { text: data.message, sender: "ai", feedbackGiven: false },
         ]);
       } else {
         toast.error(data.error || "Drug interaction error.");
@@ -363,9 +372,9 @@ export default function ChatPage() {
     }
   };
 
-  // Personalized Treatment modal submit
   const handleTreatmentSubmit = async () => {
-    if (!treatmentData.medical_history.trim() && !treatmentData.symptoms.trim()) return;
+    if (!treatmentData.medical_history.trim() && !treatmentData.symptoms.trim())
+      return;
     try {
       if (!authToken) throw new Error("Missing auth token");
       setModalLoading(true);
@@ -374,17 +383,20 @@ export default function ChatPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`
+          Authorization: `Bearer ${authToken}`,
         },
-        body: JSON.stringify(treatmentData)
+        body: JSON.stringify(treatmentData),
       });
       const data = await res.json();
       if (res.ok) {
         toast.success("Personalized treatment received.");
         setMessages((prev) => [
           ...prev,
-          { text: `Personalized Treatment Request: ${JSON.stringify(treatmentData)}`, sender: "human" },
-          { text: data.message, sender: "ai", feedbackGiven: false }
+          {
+            text: `Personalized Treatment Request: ${JSON.stringify(treatmentData)}`,
+            sender: "human",
+          },
+          { text: data.message, sender: "ai", feedbackGiven: false },
         ]);
       } else {
         toast.error(data.error || "Treatment error.");
@@ -398,7 +410,7 @@ export default function ChatPage() {
         medical_history: "",
         allergies: "",
         current_medications: "",
-        symptoms: ""
+        symptoms: "",
       });
     }
   };
@@ -409,33 +421,35 @@ export default function ChatPage() {
       <div className="flex h-screen">
         <SideBar />
         <div className="container mx-auto flex-1 flex flex-col pt-10" id="chatpage">
-          {/* Feature Buttons */}
           <div className="flex justify-center gap-4 mb-4">
             <button
               onClick={() => setShowSymptomModal(true)}
               className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors"
-              disabled={modalLoading || retrainLoading}
+              disabled={modalLoading || retrainLoading || csvTrainLoading}
             >
               Symptom Checker
             </button>
             <button
               onClick={() => setShowDrugModal(true)}
               className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
-              disabled={modalLoading || retrainLoading}
+              disabled={modalLoading || retrainLoading || csvTrainLoading}
             >
               Drug Interaction Checker
             </button>
             <button
               onClick={() => setShowTreatmentModal(true)}
               className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
-              disabled={modalLoading || retrainLoading}
+              disabled={modalLoading || retrainLoading || csvTrainLoading}
             >
               Personalized Treatment
             </button>
+            {isAdmin && (
+              <>
+            
+              </>
+            )}
           </div>
-
-          {/* Chat Container */}
-          <div
+          <div  
             ref={chatContainerRef}
             className="flex-1 overflow-y-auto p-4 space-y-4 w-[90%] mx-auto scrollbar-hide"
             style={{ paddingBottom: "5rem" }}
@@ -455,8 +469,8 @@ export default function ChatPage() {
                   >
                     <div className="flex items-center gap-2">
                       {msg.sender === "ai" && (
-                        <div className="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center">
-                          <Image className="w-5 h-5" />
+                        <div className="w-8 h-8 rounded-full  flex items-center justify-center">
+                          <Image  src={ai_avathar} alt="ai_avthar"/>
                         </div>
                       )}
                       <div
@@ -506,14 +520,22 @@ export default function ChatPage() {
               </>
             )}
           </div>
-
-          {/* Chat Input Area */}
           <div className="w-[90%] shadow-md p-4 fixed bottom-0 flex items-center gap-4 bg-black">
+            {isAdmin && (
+              <button
+                onClick={handleRetrain}
+                className="px-3 py-2 bg-yellow-400 text-black font-bold rounded-md focus:outline-none"
+                aria-label="Retrain model"
+                disabled={retrainLoading || modalLoading || csvTrainLoading}
+              >
+                {retrainLoading ? "Retraining..." : "Retrain"}
+              </button>
+            )}
             <button
               className="p-2 rounded-md hover:bg-gray-400 focus:outline-none"
               aria-label="Upload a document"
               onClick={handleUploadClick}
-              disabled={retrainLoading || modalLoading}
+              disabled={retrainLoading || modalLoading || csvTrainLoading}
             >
               <Plus />
             </button>
@@ -527,28 +549,24 @@ export default function ChatPage() {
             <button
               className="p-2 rounded-md hover:bg-gray-400 focus:outline-none"
               aria-label="Add an image"
-              disabled={retrainLoading || modalLoading}
+              disabled={retrainLoading || modalLoading || csvTrainLoading}
             >
-              <Image role="img" aria-label="Add an image" />
+              <ImageIcon role="img" aria-label="Add an image" />
             </button>
-
-            <button
-              onClick={handleRetrain}
-              className="p-2 rounded-md bg-yellow-400 text-black font-bold focus:outline-none"
-              aria-label="Retrain model"
-              disabled={retrainLoading || modalLoading}
-            >
-              {retrainLoading ? "Retraining..." : "Retrain"}
-            </button>
-
             <div className="flex-1">
               <input
-                type="text"
-                disabled={loading || !isOnline || retrainLoading || modalLoading}
+                disabled={
+                  loading ||
+                  !isOnline ||
+                  retrainLoading ||
+                  modalLoading ||
+                  csvTrainLoading
+                }
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Type a message"
+                style={{ resize: "none" }}
                 className="w-full p-2 border rounded-md bg-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -556,7 +574,13 @@ export default function ChatPage() {
               onClick={sendMessage}
               className="p-2 rounded-md hover:bg-blue-400 focus:outline-none text-blue-500"
               aria-label="Send message"
-              disabled={loading || !isOnline || retrainLoading || modalLoading}
+              disabled={
+                loading ||
+                !isOnline ||
+                retrainLoading ||
+                modalLoading ||
+                csvTrainLoading
+              }
             >
               <SendIcon />
             </button>
@@ -564,7 +588,6 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* Symptom Checker Modal */}
       <Modal
         isOpen={showSymptomModal}
         onClose={() => setShowSymptomModal(false)}
@@ -596,7 +619,6 @@ export default function ChatPage() {
         </div>
       </Modal>
 
-      {/* Drug Interaction Checker Modal */}
       <Modal
         isOpen={showDrugModal}
         onClose={() => setShowDrugModal(false)}
@@ -628,7 +650,6 @@ export default function ChatPage() {
         </div>
       </Modal>
 
-      {/* Personalized Treatment Modal */}
       <Modal
         isOpen={showTreatmentModal}
         onClose={() => setShowTreatmentModal(false)}
@@ -638,28 +659,36 @@ export default function ChatPage() {
         <input
           type="text"
           value={treatmentData.medical_history}
-          onChange={(e) => setTreatmentData({ ...treatmentData, medical_history: e.target.value })}
+          onChange={(e) =>
+            setTreatmentData({ ...treatmentData, medical_history: e.target.value })
+          }
           className="w-full p-2 border rounded-md mb-2 bg-gray-700 text-white"
           placeholder="Medical History"
         />
         <input
           type="text"
           value={treatmentData.allergies}
-          onChange={(e) => setTreatmentData({ ...treatmentData, allergies: e.target.value })}
+          onChange={(e) =>
+            setTreatmentData({ ...treatmentData, allergies: e.target.value })
+          }
           className="w-full p-2 border rounded-md mb-2 bg-gray-700 text-white"
           placeholder="Allergies"
         />
         <input
           type="text"
           value={treatmentData.current_medications}
-          onChange={(e) => setTreatmentData({ ...treatmentData, current_medications: e.target.value })}
+          onChange={(e) =>
+            setTreatmentData({ ...treatmentData, current_medications: e.target.value })
+          }
           className="w-full p-2 border rounded-md mb-2 bg-gray-700 text-white"
           placeholder="Current Medications"
         />
         <input
           type="text"
           value={treatmentData.symptoms}
-          onChange={(e) => setTreatmentData({ ...treatmentData, symptoms: e.target.value })}
+          onChange={(e) =>
+            setTreatmentData({ ...treatmentData, symptoms: e.target.value })
+          }
           className="w-full p-2 border rounded-md mb-2 bg-gray-700 text-white"
           placeholder="Symptoms"
         />

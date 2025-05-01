@@ -9,9 +9,13 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-    const { username, email, userId } = decoded as { username: string; email: string; userId: number };
-    return NextResponse.json({ username, email, userId, token });
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { username, email, userId, isAdmin } = decoded as {
+      username: string;
+      email: string;
+      userId: number;
+      isAdmin: boolean;
+    };
+    return NextResponse.json({ username, email, userId, isAdmin, token });
   } catch (error) {
     return NextResponse.json({ error: "Invalid token" }, { status: 401 });
   }

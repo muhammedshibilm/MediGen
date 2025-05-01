@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,38 +11,38 @@ datasource db {
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
-  username  String  @unique
-  email     String  @unique
-  password  String
-  isVerified Boolean @default(false)
-  verificationToken String? @unique   
-  createdAt DateTime @default(now())
-  updatedAt DateTime
-  appoinments Appoinment[]
-  uploads Upload[]
+  id                 Int           @id @default(autoincrement())
+  username           String        @unique
+  email              String        @unique
+  password           String
+  isVerified         Boolean       @default(false)
+  verificationToken  String?       @unique
+  isAdmin            Boolean       @default(false)  // New admin field
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime
+  appoinments        Appoinment[]
+  uploads            Upload[]
 }
 
-
-model Appoinment{
-  id Int @id @default(autoincrement())
-  name String
-  medicalcon String
-  preferdate String
-  doctor String
-  createdAt DateTime @default(now())
-  userId Int
-  user User @relation(fields: [userId], references: [id])
+model Appoinment {
+  id          Int       @id @default(autoincrement())
+  name        String
+  medicalcon  String
+  preferdate  String
+  doctor      String
+  createdAt   DateTime  @default(now())
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
 
-model Upload{
-  id Int @id @default(autoincrement())
-  name String
-  createdAt DateTime @default(now())
-  userId Int
-  user User @relation(fields: [userId], references: [id])
+model Upload {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now())
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
